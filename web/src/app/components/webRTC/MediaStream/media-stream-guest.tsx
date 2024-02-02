@@ -3,10 +3,20 @@ import { useState } from "react";
 import { VideoComponent, AudioComponent } from "./media-stream-component";
 import { useRecoilValue } from "recoil";
 import { mediaStreamState } from "../../../store/atoms/media-stream-atom";
+import { ToggleButtons } from "./media-stream";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import VideocamOffIcon from "@mui/icons-material/VideocamOff";
+import MicOffIcon from "@mui/icons-material/MicOff";
+import MicIcon from "@mui/icons-material/Mic";
 const MediaStreamGuest:React.FC = () => {
   const [audio, setAudio] = useState(false);
   const [video, setVideo] = useState(false);
 const {remoteStream}=useRecoilValue(mediaStreamState)
+
+
+const toggleTracks=()=>{
+  console.log("remote stream toggle tracts")
+}
   useEffect(() => {
     if (remoteStream) {
       console.log("we are inside guest vudei and we got remote stream ",remoteStream.getTracks())
@@ -19,13 +29,32 @@ const {remoteStream}=useRecoilValue(mediaStreamState)
       });
     }
   }, [remoteStream]);
+
+
+
   return (
-    <div className="media_stream_wrapper">
-      <div className="video_audio">
+    <div className="flex flex-col items-center sm:m-auto">
+      <div className="">
         {remoteStream && video && <VideoComponent media={remoteStream} />}
         {remoteStream && audio && !video && (
           <AudioComponent media={remoteStream} />
         )}
+      </div>
+      <div className="p-1 text-sky-200">
+        <ToggleButtons
+          state={video}
+          Icon={VideocamIcon}
+          OppoIcon={VideocamOffIcon}
+          toggleTracks={toggleTracks}
+          type="video"
+        />
+        <ToggleButtons
+          state={audio}
+          Icon={MicIcon}
+          toggleTracks={toggleTracks}
+          OppoIcon={MicOffIcon}
+          type="audio"
+        />
       </div>
     </div>
   );

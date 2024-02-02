@@ -51,7 +51,7 @@ const UserDetail = ({ id, name }: User) => {
 
       <button
      className="p-1 bg-emerald-600 rounded-l "
-        disabled={persontoHandshake === id}
+        disabled={persontoHandshake?.id === id}
         onClick={() => {
         emitUserRequestForVideoCall({ name, id });
         }}

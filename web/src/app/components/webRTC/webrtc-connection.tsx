@@ -69,15 +69,15 @@ const WebrtcConnection = () => {
   return (
     <div className="">
       {tracksAdded ? (
-        <div className="flex bg-gradient-to-br sm:flex-row  flex-col  w-full from-black to-slate-800  min-h-44 sm:min-h-96  h-fit  gap-2 justify-between p-4">
-          <div className=" rounded-lg flex-1 p-2 ">
+        <div className="flex bg-gradient-to-br sm:flex-row  flex-col  w-full from-black to-slate-800  min-h-44 sm:min-h-96  h-fit  gap-2 justify-between items-end ">
+          <div className="rounded-lg  p-2 mr-auto">
       
             {mediaStream && (
               <MediaStream/>
             )}
           </div>
           {remoteStream && (
-            <div className="  rounded-lg  flex-1 p-2">
+            <div className="  rounded-lg  p-2 mr-auto">
             
               <MediaStreamGuest />
             </div>

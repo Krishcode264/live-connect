@@ -14,7 +14,7 @@ interface ToggleButtonsProps {
   toggleTracks: (type: string) => void;
   type: string;
 }
-const ToggleButtons: React.FC<ToggleButtonsProps> = ({
+export const ToggleButtons: React.FC<ToggleButtonsProps> = ({
   state,
   Icon,
   OppoIcon,
@@ -53,14 +53,14 @@ const MediaStream = () => {
   };
   return (
     <>
-      <div className="media_stream_wrapper">
-        <div className="video_audio">
+      <div className="flex flex-col items-center">
+        <div className="">
           {mediaStream && <VideoComponent media={mediaStream} />}
           {/* {mediaStream && audio && !video && (
             <AudioComponent media={mediaStream} />
           )} */}
         </div>
-        <div className="toggle_btns_wrapper">
+        <div className="p-1 text-sky-200">
           <ToggleButtons
             state={video}
             Icon={VideocamIcon}

@@ -49,7 +49,7 @@ export function socketioConnection() {
     //making RTCP handshake
     socket.on(
       "receivedOfferForRTC",
-      async ({ offercreated: offer, requestedUser, user }: Offer) => {
+      async ({ createdOffer: offer, requestedUser, user }: Offer) => {
         console.log("got   step 1 : got offer ", requestedUser, user);
         if (requestedUser) {
           findUserById(requestedUser.id).then((socketID) => {

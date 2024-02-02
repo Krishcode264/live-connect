@@ -31,7 +31,7 @@ export const VideoComponent: React.FC<MediaProps> = ({
     }
   }, []);
   return (
-    <video ref={videoref} className="video_container">
+    <video ref={videoref} className="w-full h-full">
       <track kind="captions"></track>
     </video>
   );
