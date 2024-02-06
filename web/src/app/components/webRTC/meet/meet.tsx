@@ -135,16 +135,16 @@ export function Meet() {
 
   return (
     <SocketContext.Provider value={socket}>
-      <div className="bg-gradient-to-br">
+      <div className=" w-full">
         {showform && <UserForm />}
         {showCall && <Call />}
         {socket && (
           <>
-            <div className="flex flex-col  bg-gradient-to-br from-indigo-400 to-indigo-900  m-auto gap-2 p-6 rounded-lg ">
+            <div className="flex flex-col mx-auto gap-2 p-6 rounded-lg ">
               {connectedUsers.length > 0 ? (
                 <RenderConnectedUsers />
               ) : (
-                <h3 className="text-rose-500 text-xl">
+                <h3 className="text-sky-200 text-xl">
                   there is no one joined this room
                 </h3>
               )}

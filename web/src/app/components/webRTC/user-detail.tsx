@@ -9,13 +9,31 @@ import { peerConnectionState } from "../../store/selectors/pc-selector";
 import { userInfoState } from "../../store/selectors/user-selector";
 import { useContext } from "react";
 import SocketContext from "../../context/context";
+import { callState } from "@/app/store/atoms/calling-state";
+import { Icon } from "@mui/material";
+
+
+const CallStateIcon=()=>{
+    const callingState = useRecoilValue(callState);
+return (
+  <div className="flex items-center justify-center p-1">
+    {callingState !== "default" && <p>{callingState}</p>}
+    {callingState === "default" && <CallIcon />}
+    {callingState === "calling" && (
+        <CallIcon  className=""/>
+     
+    )}
+  </div>
+);
+}
 
 const UserDetail = ({ id, name }: User) => {
 
   const [{persontoHandshake}, setPersontoHandshake] = useRecoilState(guestState);
-   const socket=useContext(SocketContext)
+  const socket=useContext(SocketContext)
   const peerConnection = useRecoilValue(peerConnectionState);
   const user = useRecoilValue(userInfoState);
+  const [callingState,setCallingState]=useRecoilState(callState)
   const createOffer = async () => {
     try {
       const createdOffer = await peerConnection?.createOffer();
@@ -32,12 +50,12 @@ const UserDetail = ({ id, name }: User) => {
     requestedUser: User
   ): Promise<void> => {
   console.log(socket,'soxket from emit user req ')
-
+     setCallingState("calling");
     const createdOffer = await createOffer();
     setPersontoHandshake(() =>({persontoHandshake: requestedUser}));
     // console.log("guest from emituserrequest", persontoHandshake);
     if (socket !== null && createdOffer) {
-        console.log("socket is preset here is offer ",createdOffer)
+        console.log("socket is preset: here is offer ",createdOffer)
       socket.emit("receivedOfferForRTC", { createdOffer, requestedUser, user });
     }
   };
@@ -50,13 +68,14 @@ const UserDetail = ({ id, name }: User) => {
       <h2 className="text-lg">{name}</h2>
 
       <button
-     className="p-1 bg-emerald-600 rounded-l "
+        className="p-1 bg-emerald-600 rounded-l "
         disabled={persontoHandshake?.id === id}
         onClick={() => {
-        emitUserRequestForVideoCall({ name, id });
+          emitUserRequestForVideoCall({ name, id });
         }}
       >
-        <CallIcon />
+        {/* {callingState === "default" && <CallIcon />} */}
+<CallStateIcon/>
       </button>
     </section>
   );
@@ -66,7 +85,7 @@ const UserDetail = ({ id, name }: User) => {
   const { connectedUsers } = useRecoilValue(connectedUsersState);
   return connectedUsers.map((connecteduser: User): JSX.Element => {
 
-    return <UserDetail name={connecteduser.name} id={connecteduser.id} />;
+    return <UserDetail name={connecteduser.name} key={connecteduser.id} id={connecteduser.id} />;
   })
 
  

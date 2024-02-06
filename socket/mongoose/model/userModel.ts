@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 import { UserSchemaType } from "../../types/types";
 import { userSchema } from "../schemas/userSchema";
-
+import { v4 as uuidv4 } from "uuid";
 export const UserData = mongoose.model("SocketUsers", userSchema);
 
 export const saveUserData = async (
   data: UserSchemaType
 ): Promise<UserSchemaType | null> => {
   try {
-    const newUser = new UserData({ ...data });
+    const newUser = new UserData({ ...data,id:uuidv4()});
     const savedUser = await newUser.save();
-    return savedUser;
+    return savedUser as UserSchemaType | null; // Update the type of savedUser
   } catch (err) {
     console.log(err, "err saving connected socket user");
     return null;
@@ -22,7 +22,7 @@ export const deleteUserData = async (
 ): Promise<UserSchemaType | null> => {
   try {
     const deletedUser = await UserData.findOneAndDelete({ socketID: id });
-    return deletedUser;
+    return deletedUser as UserSchemaType | null; // Update the type of deletedUser
   } catch (err) {
     console.log(err, "err deleting user ");
     return null;
@@ -42,7 +42,7 @@ export const findUserById = async (id: string): Promise<string | null> => {
   try {
     const targetUser: UserSchemaType | null = await UserData.findOne({ id });
 
-    if (!targetUser) {
+    if (!targetUser?.socketID) {
       return null; // Return null when user is not found
     }
 

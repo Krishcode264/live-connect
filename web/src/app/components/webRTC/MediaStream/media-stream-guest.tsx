@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { VideoComponent, AudioComponent } from "./media-stream-component";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { mediaStreamState } from "../../../store/atoms/media-stream-atom";
 import { ToggleButtons } from "./media-stream";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import MicIcon from "@mui/icons-material/Mic";
+import { callState } from "@/app/store/atoms/calling-state";
+
 const MediaStreamGuest:React.FC = () => {
   const [audio, setAudio] = useState(false);
   const [video, setVideo] = useState(false);
-const {remoteStream}=useRecoilValue(mediaStreamState)
+  const {remoteStream}=useRecoilValue(mediaStreamState)
+  const setCallingState= useSetRecoilState(callState);
 
 
 const toggleTracks=()=>{
@@ -19,6 +22,7 @@ const toggleTracks=()=>{
 }
   useEffect(() => {
     if (remoteStream) {
+      setCallingState("incall")
       console.log("we are inside guest vudei and we got remote stream ",remoteStream.getTracks())
       remoteStream.getTracks().forEach((track) => {
         if (track.kind === "audio") {
@@ -33,7 +37,7 @@ const toggleTracks=()=>{
 
 
   return (
-    <div className="flex flex-col items-center sm:m-auto">
+    <div className="flex flex-col flex-1 items-center mx-auto">
       <div className="">
         {remoteStream && video && <VideoComponent media={remoteStream} />}
         {remoteStream && audio && !video && (

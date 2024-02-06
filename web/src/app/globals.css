@@ -3,13 +3,11 @@
 @tailwind utilities;
 
 @layer utilities {
-        div {
-            box-sizing: border-box;
-        }
-    }
-body{
-
-    width: 100vw;
-
+  div ,body{
+    box-sizing: border-box;
+  }
+  input {
+    outline: none;
+    border: none;
+  }
 }
-

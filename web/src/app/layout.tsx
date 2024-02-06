@@ -11,7 +11,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-gradient-to-br from-sky-900 to-blue-900 w-screen h-screen">
+      <body className="bg-gradient-to-br from-sky-900 to-blue-900   h-screen ">
         <RecoilRoot>{children}</RecoilRoot>
       </body>
     </html>

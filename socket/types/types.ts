@@ -1,3 +1,4 @@
+
 export type User = {
   name: string;
   id: string;
@@ -14,18 +15,18 @@ export type Offer = {
 export type Candidate = {
   candidate: RTCIceCandidate;
   persontoHandshake: User;
-
   user: User;
 };
 
 export type UserSchemaType = {
   name: string;
   createdAt: Date;
-  id: string;
+  id?:string;
   socketID: string;
   isConnected: boolean;
   country?: string;
   intrests?: string[];
   age?: number;
   gender?: string;
+  email:string;
 };

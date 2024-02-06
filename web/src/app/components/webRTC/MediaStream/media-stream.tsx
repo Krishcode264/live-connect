@@ -53,13 +53,13 @@ const MediaStream = () => {
   };
   return (
     <>
-      <div className="flex flex-col items-center">
-        <div className="">
+      <div className="flex flex-col items-center flex-1 mx-auto">
+     
           {mediaStream && <VideoComponent media={mediaStream} />}
           {/* {mediaStream && audio && !video && (
             <AudioComponent media={mediaStream} />
           )} */}
-        </div>
+  
         <div className="p-1 text-sky-200">
           <ToggleButtons
             state={video}

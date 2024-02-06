@@ -22,8 +22,9 @@ export type Candidate = {
 export type UserSchemaType = {
   name: string;
   createdAt: Date;
-  id: string;
-  socketID: string;
+  id?: string;
+  socketID?: string;
+  email?:string;
   isConnected: boolean;
   country?: string;
   intrests?: string[];

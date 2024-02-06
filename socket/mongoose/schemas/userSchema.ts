@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
 
@@ -8,8 +7,10 @@ export const userSchema = new Schema({
     type: Date,
     default: Date.now, // Set default to current timestamp
   },
-  id: { type: String, required: true },
-  socketID: { type: String, required: true },
+  id: { type: String},
+  password:{type:String},
+  socketID: { type: String },
+  email:{type:String},
   isConnected: { type: Boolean, default: false },
   country: { type: String, default: "" },
   intrests: { type: [String], default: [] },

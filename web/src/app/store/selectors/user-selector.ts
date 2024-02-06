@@ -1,7 +1,7 @@
 import { userState } from "../atoms/user-atom";
 import { selector } from "recoil";
-import {User} from "core"
-import { UserSchemaType } from "core";
+import {User} from "../../types/types"
+import { UserSchemaType } from "../../types/types";
 export const userInfoState=selector({
     key:"user-info-selector",
     get:({get})=>{

@@ -74,6 +74,7 @@ const Call = () => {
     });
   };
   const handleReject = (): void => {
+    setShowComponent((prev) => ({ ...prev, showCall: false }));
     setPersontoHandshake({ persontoHandshake: { name: "", id: "" } });
     setOffer({ offer: null });
   };

@@ -10,8 +10,10 @@ export const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const handleSocketConnection = (newUser: User): Promise<void> => {
     return new Promise((resolve) => {
+      const uri=process.env.NEXT_PUBLIC_SOCKET_SERVER_URL;
+ 
       try {
-        const newsocket = io("http://localhost:8080", {
+        const newsocket = io(uri || "http://localhost:8080", {
           path: "/socket",
           transports: ["websocket"],
         });
