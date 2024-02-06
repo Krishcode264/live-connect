@@ -5,6 +5,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
 import axios from "axios";
+import {useRouter} from "next/navigation";
+import { userState } from "../store/atoms/user-atom";
+import { useSetRecoilState } from "recoil";
 const SignUpSchema = z.object({
   name: z.string().min(4),
   email: z.string().email(),
@@ -12,6 +15,8 @@ const SignUpSchema = z.object({
 });
 type FormFields = z.infer<typeof SignUpSchema>;
 const Signup = () => {
+  const Router = useRouter();
+  const setUser = useSetRecoilState(userState);
   const {
     register,
     handleSubmit,
@@ -26,8 +31,21 @@ const Signup = () => {
         `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/signup`,
         data
       );
-      if (res.data.status == "error") {
-        setError("root", {message:res.data.message});
+      if (res.data.status === "success") {
+        // Set token in local storage with time limit
+        const {token,name,id} = res.data.user;
+        console.log(token,name,id)
+       
+        localStorage.setItem("token", token);
+       setUser((prevUser) => ({
+         ...prevUser,
+         name: name,
+         id: id,
+       }));
+        Router.push("/");
+      }
+      if (res.data.status === "error") {
+        setError("root", { message: res.data.message });
       }
     }
   };

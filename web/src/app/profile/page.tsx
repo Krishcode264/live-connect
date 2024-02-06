@@ -1,15 +1,15 @@
-import React from 'react'
-
+"use client";
+import React from "react";
+import { useRecoilValue } from "recoil";
+import { userInfoState } from "../store/selectors/user-selector";
 const page = () => {
+  const { name, id } = useRecoilValue(userInfoState);
   return (
     <div className="border rounded-lg w-[50%] mx-auto mt-8 p-2 ">
-      <h4></h4>
-      <form action="" className="flex flex-col rounded-lg gap-4">
-        <input type="text p-2" placeholder="Enter your name" className="p-2 rounded-lg" />
-        <input type="email" placeholder="enter email" className="p-2 rounded-lg" />
-      </form>
+      <h2>Name: {name}</h2>
+      <h2>ID: {id}</h2>
     </div>
   );
-}
+};
 
-export default page
+export default page;

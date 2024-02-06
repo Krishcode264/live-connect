@@ -7,10 +7,12 @@ export const userState = atom({
   default: {
     name:'',
     id: "",
+    email:"",
     isConnected: false,
     country: "",
     intrests: [],
     age: 0,
     gender: "",
+    socketID: "",
   }
 });
