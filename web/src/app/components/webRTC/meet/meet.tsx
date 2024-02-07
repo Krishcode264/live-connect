@@ -16,6 +16,7 @@ import { showComponentState } from "../../../store/atoms/show-component";
 import { offerState, pcState } from "../../../store/atoms/pc-atom";
 import { useSocket } from "../hooks/useSocket";
 import { usePeerConnection } from "../hooks/usePeerConnection";
+import AuthNav from "../../profile/auth_nav";
 export interface OfferSdp {
   sdp?: string;
   type: "offer";
@@ -136,7 +137,7 @@ export function Meet() {
   return (
     <SocketContext.Provider value={socket}>
       <div className=" w-full">
-        {showform && <UserForm />}
+        {!user.id && <AuthNav />}
         {showCall && <Call />}
         {socket && (
           <>

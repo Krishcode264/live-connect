@@ -1,51 +1,56 @@
-import { Candidate, Offer, User } from "../types/types";
+import { Candidate, Offer, User, type UserSchemaType } from "../types/types";
 import { Socket } from "socket.io";
 import {
-  deleteUserData,
-  findUserById,
-  saveUserData,
-} from "../mongoose/model/userModel";
-
-import { UserSchemaType } from "../types/types";
-import { getAllUsers } from "../mongoose/model/userModel";
-
+  findUserById
+} from "../mongoose/mongo_helpers/helper";
 import { io } from "..";
+import { UserData } from "../mongoose/model/userModel";
 
 export function socketioConnection() {
   io.on("connection", async (socket: Socket) => {
     console.log("user connected", socket.id);
-    getAllUsers().then((data) => socket.emit("activeUsers", data));
-
-    //sending list of active users to newly connected client
-
-    //sending data of newly connceted user to all active clients
-    socket.on("newUserConnected", (newUserData: UserSchemaType) => {
-      console.log(newUserData);
-      //sending user to mongo db
-      saveUserData({
-        ...newUserData,
-        socketID: socket.id,
+    UserData.find(
+      {
         isConnected: true,
-      }).then((data) => {
-        if (data) {
-          const { name, id } = data;
-          socket.broadcast.emit("newUserConnected", { name, id });
-        }
+        socketID: { $ne: socket.id },
+      },
+      "name id"
+    ).then((activeUsers) => {
+      socket.emit("activeUsers", activeUsers);
+    });
+
+    socket.on("newUserConnected", async (user: User) => {
+      console.log("new user connected", user);
+
+      UserData.findOneAndUpdate(
+        { id: user.id },
+        { socketID: socket.id, isConnected: true },
+        { new: true }
+      ).then((data) => {
+        const { name, id } = user;
+        socket.broadcast.emit("newUserConnected", { name, id });
       });
     });
 
     //user disconnetion
 
     socket.on("disconnect", () => {
-      deleteUserData(socket.id).then((data) => {
+      UserData.findOneAndUpdate(
+        { socketID: socket.id },
+        { socketID: "", isConnected: false },
+        { new: true }
+      ).then((data): any => {
         if (data) {
-          const { name, id } = data;
+          console.log("user dissconnected ", data);
 
-          console.log("user dissconnected ");
-          socket.broadcast.emit("userDisconnected", { name, id });
+          socket.broadcast.emit("userDisconnected", {
+            name: data.name,
+            id: data.id,
+          });
         }
       });
     });
+
     //making RTCP handshake
     socket.on(
       "receivedOfferForRTC",

@@ -5,7 +5,7 @@ const app = express();
 export const httpServer = http.createServer(app);
 import { connectMongo } from "./mongoose/connectMongo";
 import { Server } from "socket.io";
-import { signupRouter } from "./api/signup";
+import { authRouter } from "./api/auth";
 import cors from 'cors'
 import bodyParser from "body-parser";
 export const io = new Server(httpServer, { path: "/socket" });
@@ -16,7 +16,7 @@ app.use(cors())
 app.get('/socket',(req)=>{
 console.log("getting req at socket uri",req)
 })
-app.use("/signup",signupRouter)
+app.use("/auth",authRouter)
 httpServer.listen(8080, () => {
   console.log("server is listening on port 8080");
   connectMongo();

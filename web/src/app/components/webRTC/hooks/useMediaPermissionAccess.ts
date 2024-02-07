@@ -19,5 +19,6 @@ export const useMediaPermissionAccess = () => {
       setMedia(() => ({ audio, video }));
     })();
   }, []);
+
   return media;
 };

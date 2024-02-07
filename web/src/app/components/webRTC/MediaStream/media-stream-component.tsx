@@ -13,7 +13,7 @@ export const VideoComponent: React.FC<MediaProps> = ({
   const videoref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
 
-    console.log(media)
+    console.log(media,"from video component ")
     if (videoref.current) {
       videoref.current.srcObject = media;
 

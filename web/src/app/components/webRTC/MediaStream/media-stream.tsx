@@ -40,7 +40,7 @@ const MediaStream = () => {
   const [audio, setAudio] = useState(false);
   const [video, setVideo] = useState(false);
   const { mediaStream } = useRecoilValue(mediaStreamState);
-
+console.log(mediaStream,"mediaStream")
   const toggleTracks = (type: string) => {
     peerConnection?.getSenders().forEach((sender: RTCRtpSender) => {
       if (sender.track?.kind === type) {

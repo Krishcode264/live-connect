@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
 import axios from "axios";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { userState } from "../store/atoms/user-atom";
 import { useSetRecoilState } from "recoil";
 const SignUpSchema = z.object({
@@ -28,27 +28,33 @@ const Signup = () => {
     if (process.env.NEXT_PUBLIC_SOCKET_SERVER_URL) {
       console.log(data);
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/signup`,
+        `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/auth/signup`,
         data
       );
       if (res.data.status === "success") {
         // Set token in local storage with time limit
-        const {token,name,id} = res.data.user;
-        console.log(token,name,id)
-       
+        const { token, name, id } = res.data.user;
+        console.log(token, name, id);
+
         localStorage.setItem("token", token);
-       setUser((prevUser) => ({
-         ...prevUser,
-         name: name,
-         id: id,
-       }));
-        Router.push("/");
-      }
+        setUser((prevUser) => ({
+          ...prevUser,
+          name: name,
+          id: id,
+        }));
+        // if (Router === "/signin") {
+        //   Router.replace("/");
+        // } else {
+          Router.replace("/");
+          
+        }
+      
       if (res.data.status === "error") {
         setError("root", { message: res.data.message });
       }
     }
-  };
+    }
+  
   return (
     <div className="flex justify-center items-center h-full w-full ">
       <div className="  rounded-lg w-[80%] mb:w-[60%] md:w-[30%] mx-auto mt-4  p-3 bg-gradient-to-r  from-blue-400  via-sky-900 to-sky-950 ">
@@ -96,6 +102,7 @@ const Signup = () => {
           </button>
           <button className="p-2 rounded-xl text-slate-300 shadow-md hover:shadow-sky-500 ">
             Sign up with Google
+   
           </button>
           {errors.root && (
             <p className="text-red-400 ">{errors.root.message}</p>
@@ -103,7 +110,7 @@ const Signup = () => {
           <p className="text-slate-900">
             Alredy have account?
             <Link
-              href="/signin"
+              href="/login"
               className="text-blue-400  ml-1 hover:text-blue-500 "
             >
               Login
