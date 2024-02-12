@@ -46,21 +46,24 @@ const MediaPermission = () => {
   }, [audio, video]);
 
   return (
-    <div className="  text-slate-800 bg-gradient-to-br from-sky-900 to-blue-900 shadow-lg shadow-sky-700 p-6 w-3/5 md:w-1/2 m-auto flex flex-col items-center rounded-xl relative top-40">
-      <p className="text-xl text-slate-400">
-        we need acces to your camera and microphone
-      </p>
-      <div className="m-auto">
-        <CameraIcon sx={{ fontSize: "33px" }} />
-        <MicIcon sx={{ fontSize: "33px" }} />
-      </div>
-      <button
-        className="p-1  text-slate-800 bg-sky-700 hover:bg-sky-600    mt-4 text-xl font-semibold rounded-lg"
-        onClick={getUserMediaStream}
-      >
-        Give Access
-      </button>
-    </div>
+  
+        <div className="  text-slate-800 bg-gradient-to-br from-sky-900 to-blue-900 shadow-lg shadow-sky-700 p-6 w-3/5 md:w-1/2 m-auto flex flex-col items-center rounded-xl relative top-40">
+          <p className="text-xl text-slate-400">
+            we need acces to your camera and microphone
+          </p>
+          <div className="m-auto">
+            <CameraIcon sx={{ fontSize: "33px" }} />
+            <MicIcon sx={{ fontSize: "33px" }} />
+          </div>
+          <button
+            className="p-1  text-slate-800 bg-sky-700 hover:bg-sky-600    mt-4 text-xl font-semibold rounded-lg"
+            onClick={getUserMediaStream}
+          >
+            Give Access
+          </button>
+        </div>
+    
+    
   );
 };
 

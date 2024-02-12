@@ -5,8 +5,9 @@ import { userInfoState } from "../store/selectors/user-selector";
 import { useRouter } from "next/navigation";
 import Profile from "../components/profile/user_profile";
 import AuthNav from "../components/profile/auth_nav";
+import { useValidateToken } from "../utils/hooks/validate_token";
 const page = () => {
-  
+    useValidateToken();
   const { name, id } = useRecoilValue(userInfoState);
 
 

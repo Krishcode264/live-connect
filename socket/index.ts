@@ -8,6 +8,7 @@ import { Server } from "socket.io";
 import { authRouter } from "./api/auth";
 import cors from 'cors'
 import bodyParser from "body-parser";
+import checkTokenValidity from "./middlewares/authenticate_jwt";
 export const io = new Server(httpServer, { path: "/socket" });
 app.use(cors())
    app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,6 +17,7 @@ app.use(cors())
 app.get('/socket',(req)=>{
 console.log("getting req at socket uri",req)
 })
+app.post("/validateToken",checkTokenValidity)
 app.use("/auth",authRouter)
 httpServer.listen(8080, () => {
   console.log("server is listening on port 8080");

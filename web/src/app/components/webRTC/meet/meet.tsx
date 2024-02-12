@@ -146,7 +146,6 @@ export function Meet() {
   return (
     <SocketContext.Provider value={socket}>
       <div className=" w-full">
-        {!user.id && <AuthNav />}
         {showCall && <Call />}
         {socket && (
           <>
