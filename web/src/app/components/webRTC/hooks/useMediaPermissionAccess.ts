@@ -6,7 +6,7 @@ export const useMediaPermissionAccess = () => {
     audio: string;
   }
   const [media, setMedia] = useState<MediaState>({ video: "", audio: "" });
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     (async () => {
       const { state: video } = await navigator.permissions.query({
@@ -17,8 +17,9 @@ export const useMediaPermissionAccess = () => {
       });
 
       setMedia(() => ({ audio, video }));
+      setIsLoading(false);
     })();
   }, []);
 
-  return media;
+  return { media, isLoading };
 };

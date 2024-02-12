@@ -1,15 +1,20 @@
-
 "use client"
-import React, { useEffect } from "react";
+import React from "react";
 import { Meet } from "../components/webRTC/meet/meet";
 import { useValidateToken } from "../utils/hooks/validate_token";
-import { isValid } from "zod";
 import AuthNav from "../components/profile/auth_nav";
+import Loading from "../components/basic/loading";
 const Page = () => {
-  const isValid=useValidateToken()
-     console.log(isValid)
+  const {isValid,isLoading}=useValidateToken()
+   
+  if(isLoading){
+    return(
+  <Loading/>
+    )
+  }
   return(
     <>
+
 {isValid.status ? <Meet/> : <AuthNav text={isValid.message}/>}
     </>
   )

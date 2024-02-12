@@ -8,7 +8,7 @@ export const useValidateToken = () => {
   console.log("usevalidate is running");
   const [user, setUser] = useRecoilState(userState);
   const [isValid, setIsValid] = useState({ status: false, message: "" });
- 
+     const[isLoading,setIsLoading]=useState(true)
   useEffect(() => {
      const token = localStorage.getItem("token");
     const validate = async () => {
@@ -17,9 +17,11 @@ export const useValidateToken = () => {
           status: false,
           message: "you need to Authenticate...",
         }));
+        setIsLoading(false)
       }
       if (user.name) {
         setIsValid(() => ({ status: true, message: "" }));
+        setIsLoading(false);
       }
       if (!user.name && token) {
         const res = await axios.post(
@@ -30,15 +32,17 @@ export const useValidateToken = () => {
           setUser((prev) => ({ ...prev, ...res.data }));
           console.log("got user in data user token is valid ");
           setIsValid(() => ({ status: true, message: "" }));
+          setIsLoading(false);
         } else {
           setIsValid(() => ({
             status: false,
             message: "Your token has expired , need login ",
           }));
+          setIsLoading(false);
         }
       }
     };
     validate();
   }, []);
-  return isValid;
+  return {isValid,isLoading};
 };

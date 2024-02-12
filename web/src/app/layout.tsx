@@ -11,6 +11,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>live connect</title>
+      </head>
       <body className="bg-gradient-to-br from-sky-900 to-blue-900   h-screen ">
         <div className="h-full w-full">
           <RecoilRoot>{children}</RecoilRoot>
