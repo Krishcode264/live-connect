@@ -1,14 +1,14 @@
 import { Candidate, Offer, User, type UserSchemaType } from "../types/types";
 import { Socket } from "socket.io";
-import {
-  findUserById
-} from "../mongoose/mongo_helpers/helper";
+import { findUserById } from "../mongoose/mongo_helpers/helper";
 import { io } from "..";
 import { UserData } from "../mongoose/model/userModel";
 
 export function socketioConnection() {
+  
   io.on("connection", async (socket: Socket) => {
     console.log("user connected", socket.id);
+    //getting all active users, sending to newly connected user
     UserData.find(
       {
         isConnected: true,
@@ -19,9 +19,9 @@ export function socketioConnection() {
       socket.emit("activeUsers", activeUsers);
     });
 
+//sending newly connected user to alredy active members
     socket.on("newUserConnected", async (user: User) => {
       console.log("new user connected", user);
-
       UserData.findOneAndUpdate(
         { id: user.id },
         { socketID: socket.id, isConnected: true },
@@ -35,6 +35,7 @@ export function socketioConnection() {
     //user disconnetion
 
     socket.on("disconnect", () => {
+      console.log("disconnection with user comming from the client ")
       UserData.findOneAndUpdate(
         { socketID: socket.id },
         { socketID: "", isConnected: false },

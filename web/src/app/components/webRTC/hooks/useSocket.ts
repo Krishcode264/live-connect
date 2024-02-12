@@ -35,6 +35,16 @@ export const useSocket = () => {
         await handleSocketConnection(user);
       }
     })();
+    return()=>{
+
+      if(socket){
+              console.log(
+                
+                "component unmouting , return from use socket running"
+             );
+        socket.disconnect()
+      }
+    }
   }, [user]);
 
   return { socket };

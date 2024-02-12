@@ -40,6 +40,15 @@ export function Meet() {
       setPeerConnection((prev) => ({ ...prev, peerConnection }));
       setShowComponent((prev) => ({ ...prev, showWebrtcConnection: true }));
     }
+    return(()=>{
+      console.log("socket dissconnected from meet.tsx")
+      socket?.disconnect();
+            setPeerConnection((prev) => ({ ...prev, peerConnection:null }));
+            setShowComponent((prev) => ({
+              ...prev,
+              showWebrtcConnection: false,
+            }));
+    })
   }, [socket, peerConnection]);
 
   //ice candidate exchnage
