@@ -40,7 +40,7 @@ const MediaStream = () => {
   const [audio, setAudio] = useState(false);
   const [video, setVideo] = useState(false);
   const { mediaStream } = useRecoilValue(mediaStreamState);
-console.log(mediaStream,"mediaStream")
+  console.log(mediaStream, "mediaStream");
   const toggleTracks = (type: string) => {
     peerConnection?.getSenders().forEach((sender: RTCRtpSender) => {
       if (sender.track?.kind === type) {
@@ -54,12 +54,11 @@ console.log(mediaStream,"mediaStream")
   return (
     <>
       <div className="flex flex-col items-center flex-1 mx-auto">
-     
-          {mediaStream && <VideoComponent media={mediaStream} />}
-          {/* {mediaStream && audio && !video && (
+        {mediaStream && <VideoComponent media={mediaStream} />}
+        {/* {mediaStream && audio && !video && (
             <AudioComponent media={mediaStream} />
           )} */}
-  
+
         <div className="p-1 text-sky-200">
           <ToggleButtons
             state={video}

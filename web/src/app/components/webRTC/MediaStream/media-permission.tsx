@@ -2,18 +2,16 @@ import React from "react";
 import CameraIcon from "@mui/icons-material/Camera";
 import MicIcon from "@mui/icons-material/Mic";
 import { useEffect } from "react";
-import { useMediaPermissionAccess } from "../hooks/useMediaPermissionAccess";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { peerConnectionState } from "../../../store/selectors/pc-selector";
-import { mediaStreamState } from "../../../store/atoms/media-stream-atom";
-import Loading from "../../basic/loading";
+import { useRecoilValue } from "recoil";
+import { userPermissionState } from "@/app/store/atoms/user-permissions_atom";
+import { useRecoilState } from "recoil";
+import { mediaStreamState } from "@/app/store/atoms/media-stream-atom";
+import { peerConnectionState } from "@/app/store/selectors/pc-selector";
 const MediaPermission = () => {
-  const {
-    media: { audio, video },
-    isLoading,
-  } = useMediaPermissionAccess();
-  const peerConnection = useRecoilValue(peerConnectionState);
+  const { video, audio } = useRecoilValue(userPermissionState);
   const [{}, setMediaStreamAll] = useRecoilState(mediaStreamState);
+  const peerConnection = useRecoilValue(peerConnectionState);
+
   const getUserMediaStream = () => {
     const setDefaultdisabledTracks = (stream: MediaStream) => {
       stream.getTracks().forEach((track) => {
@@ -42,18 +40,13 @@ const MediaPermission = () => {
   };
 
   useEffect(() => {
-    console.log(video, audio);
-    if (audio === "granted" || video === "granted") {
+    console.log(video, audio, "from medi permission");
+    if (audio === "granted" && video === "granted") {
+      console.log("this is running");
       getUserMediaStream();
     }
-  }, [audio, video]);
+  }, [video, audio]);
 
-
-  if(audio==="granted"&& video==='granded'){
-    return (
-      <Loading/>
-    )
-  }
   return (
     <div className="  text-slate-800 bg-gradient-to-br from-sky-900 to-blue-900 shadow-lg shadow-sky-700 p-6 w-3/5 md:w-1/2 m-auto flex flex-col items-center rounded-xl relative top-40">
       <p className="text-xl text-slate-400">

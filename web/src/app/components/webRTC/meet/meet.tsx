@@ -17,6 +17,7 @@ import { offerState, pcState } from "../../../store/atoms/pc-atom";
 import { useSocket } from "../hooks/useSocket";
 import { usePeerConnection } from "../hooks/usePeerConnection";
 import AuthNav from "../../profile/auth_nav";
+import { useMediaPermissionAccess } from "../hooks/useMediaPermissionAccess";
 export interface OfferSdp {
   sdp?: string;
   type: "offer";
@@ -34,6 +35,7 @@ export function Meet() {
   const { socket } = useSocket();
   const peerConnection = usePeerConnection();
   const setPeerConnection = useSetRecoilState(pcState);
+  useMediaPermissionAccess()
   useEffect(() => {
     if (socket && peerConnection) {
       console.log("i dont know why running ")

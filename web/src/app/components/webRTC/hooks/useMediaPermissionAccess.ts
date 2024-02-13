@@ -1,25 +1,28 @@
 "use client ";
+import { userPermissionState } from "@/app/store/atoms/user-permissions_atom";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 export const useMediaPermissionAccess = () => {
   interface MediaState {
     video: string;
     audio: string;
   }
-  const [media, setMedia] = useState<MediaState>({ video: "", audio: "" });
-  const [isLoading, setIsLoading] = useState(true);
+  const [{ video, audio }, setMediaPermission] =
+    useRecoilState(userPermissionState);
+
+    console.log(video,audio,"from hook")
   useEffect(() => {
-    (async () => {
-      const { state: video } = await navigator.permissions.query({
-        name: "camera" as PermissionName,
-      });
-      const { state: audio } = await navigator.permissions.query({
-        name: "microphone" as PermissionName,
-      });
+    if (audio != "granted" || video != "granted") {
+      (async () => {
+        const { state: video } = await navigator.permissions.query({
+          name: "camera" as PermissionName,
+        });
+        const { state: audio } = await navigator.permissions.query({
+          name: "microphone" as PermissionName,
+        });
 
-      setMedia(() => ({ audio, video }));
-      setIsLoading(false);
-    })();
+        setMediaPermission((prev) => ({ ...prev, audio, video }));
+      })();
+    }
   }, []);
-
-  return { media, isLoading };
 };

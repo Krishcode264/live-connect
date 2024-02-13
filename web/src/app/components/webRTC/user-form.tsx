@@ -30,7 +30,7 @@ export const UserForm: React.FC = () => {
         onChange={(e) => setName(() => e.target.value)}
         value={name}
         placeholder="enter your name"
-        
+
       />
       <button
         className="p-2  rounded-xl bg-voilet-300 text-white text-xl shadow-lg border border-slate-500 hover:border-slate-200 "

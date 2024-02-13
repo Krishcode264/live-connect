@@ -79,7 +79,7 @@ const Login = () => {
           {errors.password && (
             <p className="text-red-400 ">{errors.password.message}</p>
           )}
-      
+
           <button
             disabled={isSubmitting}
             className="p-2 rounded-xl  text-slate-400 font-medium hover:text-slate-300 shadow-lg hover:shadow-sky-500 "
@@ -99,7 +99,7 @@ const Login = () => {
             <p className="text-red-400 ">{errors.root.message}</p>
           )}
           <p className="text-slate-900">
-            Alredy have account?
+            Dont have an account?
             <Link
               href="/signup"
               className="text-blue-400  ml-1 hover:text-blue-500 "

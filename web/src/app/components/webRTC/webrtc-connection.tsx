@@ -8,11 +8,10 @@ import { mediaStreamState } from "../../store/atoms/media-stream-atom";
 import MediaPermission from "./MediaStream/media-permission";
 
 const WebrtcConnection = () => {
-
   const peerConnection = useRecoilValue(peerConnectionState);
   const [remoteStream, setRemoteStream] = useRecoilState(remoteStreamState);
-  const [{ mediaStream ,tracksAdded}, setMediaStreamAll] = useRecoilState(mediaStreamState);
-
+  const [{ mediaStream, tracksAdded }, setMediaStreamAll] =
+    useRecoilState(mediaStreamState);
 
   useEffect(() => {
     if (peerConnection) {
@@ -31,10 +30,10 @@ const WebrtcConnection = () => {
       {tracksAdded ? (
         <div className="flex bg-gradient-to-br sm:flex-row  flex-col   from-black to-slate-800  min-h-44 sm:min-h-96  h-fit  gap-2 justify-between items-end p-4">
           {mediaStream && <MediaStream />}
-          {remoteStream && <MediaStreamGuest/>}
+          {remoteStream && <MediaStreamGuest />}
         </div>
       ) : (
-        <MediaPermission/>
+        <MediaPermission />
       )}
     </div>
   );
