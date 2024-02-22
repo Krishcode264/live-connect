@@ -1,5 +1,7 @@
 import http from "http";
 import { socketioConnection } from "./webRTC";
+// JavaScript
+import dotenv from 'dotenv'
 import express from 'express';
 const app = express();
 export const httpServer = http.createServer(app);
@@ -19,7 +21,7 @@ console.log("getting req at socket uri",req)
 })
 app.post("/validateToken",checkTokenValidity)
 app.use("/auth",authRouter)
-httpServer.listen(8080, () => {
+httpServer.listen(process.env.PORT||8080, () => {
   console.log("server is listening on port 8080");
   connectMongo();
   socketioConnection()
