@@ -76,7 +76,11 @@ const UserDetail = ({ id, name }: User) => {
 
 const RenderConnectedUsers = () => {
   const { connectedUsers } = useRecoilValue(connectedUsersState);
-  return connectedUsers.map((connecteduser: User): JSX.Element => {
+  const {id}=useRecoilValue(userInfoState)
+  return connectedUsers.map((connecteduser: User): JSX.Element | null => {
+    if(connecteduser.id===id){
+      return null;
+    }
     return (
       <UserDetail
         name={connecteduser.name}

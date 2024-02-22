@@ -36,7 +36,7 @@ const Signup = () => {
         const { token, name, id } = res.data.user;
         console.log(token, name, id);
 
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
         setUser((prevUser) => ({
           ...prevUser,
           name: name,

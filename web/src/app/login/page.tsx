@@ -27,6 +27,7 @@ const Login = () => {
   } = useForm<FormFields>({ resolver: zodResolver(LoginSchema) });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    
     if (process.env.NEXT_PUBLIC_SOCKET_SERVER_URL) {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/auth/login`,
@@ -34,7 +35,7 @@ const Login = () => {
       );
       if (res.data.status === "success") {
         const { token, name, id } = res.data.user;
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
         setUser((prevUser) => ({
           ...prevUser,
           name: name,

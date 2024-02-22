@@ -8,22 +8,23 @@ export const useValidateToken = () => {
   console.log("usevalidate is running");
   const [user, setUser] = useRecoilState(userState);
   const [isValid, setIsValid] = useState({ status: false, message: "" });
-     const[isLoading,setIsLoading]=useState(true)
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-     const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token"); // Use sessionStorage instead of localStorage
     const validate = async () => {
       if (!token) {
         setIsValid(() => ({
           status: false,
           message: "you need to Authenticate...",
         }));
-        setIsLoading(false)
+        setIsLoading(false);
       }
       if (user.name) {
         setIsValid(() => ({ status: true, message: "" }));
         setIsLoading(false);
       }
       if (!user.name && token) {
+        console.log(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL, "env variable from frontend ");
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/validateToken`,
           { token }
@@ -36,7 +37,7 @@ export const useValidateToken = () => {
         } else {
           setIsValid(() => ({
             status: false,
-            message: "Your token has expired , need login ",
+            message: "Your token has expired, need login ",
           }));
           setIsLoading(false);
         }
@@ -44,5 +45,5 @@ export const useValidateToken = () => {
     };
     validate();
   }, []);
-  return {isValid,isLoading};
+  return { isValid, isLoading };
 };
