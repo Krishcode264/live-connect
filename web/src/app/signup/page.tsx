@@ -6,8 +6,10 @@ import { z } from "zod";
 import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { userState } from "../store/atoms/user-atom";
+import { userBasicInfoState } from "../store/atoms/user-atom";
 import { useSetRecoilState } from "recoil";
+import googleLogo from '../images/google.png'
+import Image from "next/image";
 const SignUpSchema = z.object({
   name: z.string().min(4),
   email: z.string().email(),
@@ -16,7 +18,7 @@ const SignUpSchema = z.object({
 type FormFields = z.infer<typeof SignUpSchema>;
 const Signup = () => {
   const Router = useRouter();
-  const setUser = useSetRecoilState(userState);
+  const setUser = useSetRecoilState(userBasicInfoState);
   const {
     register,
     handleSubmit,
@@ -45,7 +47,7 @@ const Signup = () => {
         // if (Router === "/signin") {
         //   Router.replace("/");
         // } else {
-          Router.replace("/");
+          Router.back();
           
         }
       
@@ -54,30 +56,31 @@ const Signup = () => {
       }
     }
     }
+ 
   
   return (
     <div className="flex justify-center items-center h-full w-full ">
-      <div className="  rounded-lg w-[80%] mb:w-[60%] md:w-[30%] mx-auto mt-4  p-3 bg-gradient-to-r  from-blue-400  via-sky-900 to-sky-950 ">
-        <h4 className=" mx-auto text-center text-2xl text-slate-300 p-2">
+      <div className="  rounded-lg w-[80%]  md:w-[40%] mx-auto mt-4  p-3 py-4">
+        <h4 className=" mx-auto text-center text-2xl text-slate-600 p-2">
           Create Account
         </h4>
         <form
           action=""
-          className="flex flex-col rounded-lg gap-2 "
+          className="flex flex-col rounded-lg gap-5 p-2"
           onSubmit={handleSubmit(onSubmit)}
         >
           <input
             {...register("name")}
             type="text"
             placeholder="Enter your name"
-            className="p-2 rounded-lg text-xl bg-slate-800 text-slate-300"
+            className="p-2 rounded-lg text-xl bg-slate-200 text-slate-800"
           />
           {errors.name && <p className="text-red-300">{errors.name.message}</p>}
           <input
             {...register("email")}
             type="email"
             placeholder="Enter email"
-            className="p-2 rounded-lg text-xl text-slate-300 bg-slate-800"
+            className="p-2 rounded-lg text-xl text-slate-800 bg-slate-200"
           />
           {errors.email && (
             <p className="text-red-400">{errors.email.message}</p>
@@ -86,32 +89,30 @@ const Signup = () => {
             {...register("password")}
             type="password"
             placeholder="Enter password"
-            className="p-2 rounded-lg text-xl text-slate-300 bg-slate-800"
+            className="p-2 rounded-lg text-xl text-slate-800 bg-slate-200"
           />
           {errors.password && (
             <p className="text-red-400 ">{errors.password.message}</p>
           )}
           <button
             disabled={isSubmitting}
-            className="p-2 rounded-xl text-slate-300 shadow-lg hover:shadow-sky-500 "
+            className="p-2 rounded-xl text-slate-200  bg-blue-600 font-medium "
           >
             Create Account
             {isSubmitting && (
               <WorkspacesOutlinedIcon className="animate-spin" />
             )}
           </button>
-          <button className="p-2 rounded-xl text-slate-300 shadow-md hover:shadow-sky-500 ">
-            Sign up with Google
-   
-          </button>
+
+
           {errors.root && (
-            <p className="text-red-400 ">{errors.root.message}</p>
+            <p className="text-red-400  ">{errors.root.message}</p>
           )}
           <p className="text-slate-900">
             Alredy have account?
             <Link
               href="/login"
-              className="text-blue-400  ml-1 hover:text-blue-500 "
+              className="text-blue-500  ml-1 hover:text-blue-700 "
             >
               Login
             </Link>

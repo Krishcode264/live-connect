@@ -5,10 +5,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { z } from "zod";
 import axios from "axios";
-import { userState } from "../store/atoms/user-atom";
+import { userBasicInfoState } from "@/store/atoms/user-atom";
 import Link from "next/link";
 import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
-
+import { useSession, signIn, signOut } from "next-auth/react";
 const LoginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
@@ -18,7 +18,7 @@ type FormFields = z.infer<typeof LoginSchema>;
 
 const Login = () => {
  const Router=useRouter()
-  const setUser = useSetRecoilState(userState);
+  const setUser = useSetRecoilState(userBasicInfoState);
   const {
     register,
     handleSubmit,
@@ -42,7 +42,7 @@ const Login = () => {
           id: id,
         }));
           
-        Router.replace("/");
+        Router.back();
       
       }
       if (res.data.status === "error") {
@@ -53,20 +53,21 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-full w-full ">
-      <div className="rounded-lg w-[80%] mb:w-[60%] md:w-[30%] mx-auto mt-4 p-3 py-4 bg-gradient-to-r from-blue-400 via-sky-900 to-sky-950 ">
-        <h4 className="mx-auto text-center text-2xl text-slate-300 p-2">
-          Login
+      
+      <div className="rounded-lg  w-[80%] md:w-[40%] mx-auto mt-4 p-3 py-4   ">
+        <h4 className="mx-auto text-center text-2xl text-slate-900 p-2">
+         Sign in 
         </h4>
         <form
           action=""
-          className="flex flex-col rounded-lg gap-2 "
+          className="flex flex-col rounded-lg gap-5 p-2  "
           onSubmit={handleSubmit(onSubmit)}
         >
           <input
             {...register("email")}
             type="email"
             placeholder="Enter email"
-            className="p-2 rounded-lg text-xl text-slate-300 bg-slate-800"
+            className="p-2 rounded-lg text-xl text-slate-800 bg-slate-200"
           />
           {errors.email && (
             <p className="text-red-400">{errors.email.message}</p>
@@ -75,7 +76,7 @@ const Login = () => {
             {...register("password")}
             type="password"
             placeholder="Enter password"
-            className="p-2 rounded-lg text-xl text-slate-300 bg-slate-800"
+            className="p-2 rounded-lg text-xl text-slate-800 bg-slate-200"
           />
           {errors.password && (
             <p className="text-red-400 ">{errors.password.message}</p>
@@ -83,16 +84,17 @@ const Login = () => {
 
           <button
             disabled={isSubmitting}
-            className="p-2 rounded-xl  text-slate-400 font-medium hover:text-slate-300 shadow-lg hover:shadow-sky-500 "
+            className="p-2 rounded-xl  text-slate-200 bg-blue-400 font-medium "
           >
-            Login{" "}
+            Login
             {isSubmitting && (
               <WorkspacesOutlinedIcon className="animate-spin" />
             )}
           </button>
           <button
             disabled={isSubmitting}
-            className="p-2 rounded-xl text-slate-400 font-medium hover:text-slate-300 shadow-lg hover:shadow-sky-500 "
+            onClick={()=>signIn()}
+            className="p-2 rounded-xl bg-blue-400 text-slate-200 font-medium"
           >
             Login with Google
           </button>

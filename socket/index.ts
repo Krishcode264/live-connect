@@ -21,6 +21,11 @@ console.log("getting req at socket uri",req)
 })
 app.post("/validateToken",checkTokenValidity)
 app.use("/auth",authRouter)
+app.get('/userPreferencesState',(req,res)=>{
+console.log("req getting for user data ")
+console.log(req)
+res.send("success");
+})
 httpServer.listen(process.env.PORT||8080, () => {
   console.log("server is listening on port 8080");
   connectMongo();
