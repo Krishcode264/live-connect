@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import ProfilePic from '../profile/profile_photo';
 import Link from 'next/link';
 import ChatIcon from "@mui/icons-material/Chat";
@@ -7,8 +7,14 @@ import { Icon } from '@mui/material';
 import StreamIcon from '@mui/icons-material/Stream';
 import GroupsIcon from "@mui/icons-material/Groups";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useValidateToken } from '@/utils/hooks/validate_token';
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { verifyGoogleAuthUser } from '@/actions/authActions';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { userInfoState } from '@/store/selectors/user-selector';
+import { userBasicInfoState } from '@/store/atoms/user-atom';
+
+
 const generateSideBarOptions=(options:string[],icon: React.JSX.Element[] | (string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined)[])=>{
 return options.map((option:string,index)=>{
 
@@ -28,22 +34,54 @@ return options.map((option:string,index)=>{
 })
 }
 
-const SideBar = () => {
-const {isValid,isLoading}=useValidateToken()
-const sideBarOptions = ["Messages", "Feed","Rooms", "My Profile", "Settings"];
-const icons=[<ChatIcon/>,<StreamIcon/>,<GroupsIcon/>,<AccountCircleIcon/>,<SettingsIcon/>]
+const Sidebarheader=()=>{
 
+  const user =useRecoilValue(userBasicInfoState);
+console.log("user rendered ",user)
+  return (
+    <>
+    
+          <ProfilePic size={16} iconSize={50} src={user.profile} />
+    
+      <h3 className="text-center sm:text-xl text-blue-600 font-bold">
+        {user.name}
+      </h3>
+    </>
+  );
+}
+
+
+
+const SideBar = () => {
+
+const sideBarOptions = useMemo(()=>["Messages", "Feed","Rooms", "My Profile", "Settings"],[]);
+ const icons = useMemo(
+   () => [
+     <ChatIcon />,
+     <StreamIcon />,
+     <GroupsIcon />,
+     <AccountCircleIcon />,
+     <SettingsIcon />,
+   ],
+   []
+ );
+ 
+console.log("sidebar rendered")
   return (
     <div className="rounded-lg h-[90%] w-[8%]   md:w-[15%] sm:p-2 flex flex-col   justify-start  ">
-     {isValid.status ? 
-      <>
-      <ProfilePic size={12} />
-      <h3 className="text-center sm:text-xl text-blue-600 font-bold">Krish</h3>
-      </>
-      : <AccountCircleIcon className='mx-auto text-[50px] border-none hover:cursor-pointer'/>
-     }
+      {/* {user.profile ? (
+        <>
+          <ProfilePic size={12} src={user.profile} />
+        </>
+      ) : (
+        <AccountCircleIcon className="mx-auto text-[50px] border-none hover:cursor-pointer" />
+      )}{" "}
+      <h3 className="text-center sm:text-xl text-blue-600 font-bold">
+        {user.name}
+      </h3> */}
+      <Sidebarheader/>
       <div className="flex flex-col gap-2 text-center  text-l mt-12  w-full  mx-auto">
-        {generateSideBarOptions(sideBarOptions,icons)}
+        {generateSideBarOptions(sideBarOptions, icons)}
       </div>
     </div>
   );

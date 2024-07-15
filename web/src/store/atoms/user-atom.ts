@@ -1,20 +1,29 @@
 "use client";
 import { UserSchemaType } from "../../types/types";
 import { atom } from "recoil";
-
+export interface UserBasicInfo {
+  name: string;
+  id: string;
+  email: string;
+  age: number;
+  gender: string;
+  user_name: string;
+  profile: string;
+  fetched: boolean;
+}
 // Basic user info
-export const userBasicInfoState = atom({
+export const userBasicInfoState = atom<UserBasicInfo>({
   key: "user-basic-info-state",
   default: {
-    name: '',
-    id: '',
-    email: '',
+    name: "",
+    id: "",
+    email: "",
     age: 0,
-    gender: '',
-    user_name: '',
-    profile_photo: '',
-    fetched:false,
-  }
+    gender: "",
+    user_name: "",
+    profile: "",
+    fetched: false,
+  },
 });
 
 // User connectivity status

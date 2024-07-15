@@ -25,7 +25,8 @@
       "@/context/*": ["src/context/*"],
       "@/actions/*": ["src/actions/*"],
       "@/utils/*": ["src/utils/*"],
-      "@/images/*": ["public/images/*"],
+      "@/store/*": ["src/store/*"],
+      "@/images/*": ["src/images/*"],
       "@/*": ["./src/*"]
     }
   },

@@ -1,6 +1,10 @@
-import React from "react";
+"use client"
+import React, { useEffect } from "react";
 import Link from "next/link";
 const AuthNav = ({text}:{text?:string}) => {
+  useEffect(()=>{
+window.sessionStorage.setItem("privousRoute", window.location.pathname);
+  },[])
   return (
     <div className=" mx-auto bg-slate-200   text-slate-800  shadow-lg  p-6 w-3/5 md:w-1/2 m-auto flex flex-col items-center rounded-xl relative top-40  ">
       <h1 className="align-center text-center text-xl text-slate-400">

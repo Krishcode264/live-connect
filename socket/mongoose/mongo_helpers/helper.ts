@@ -6,10 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 import { UserData } from "../model/userModel";
 
 export const saveUserData = async (
-  data: UserSchemaType
+  data: UserSchemaType,
+
+  authType:{provider:string,expires?:string}
 ): Promise<UserSchemaType | null> => {
   try {
-    const newUser = new UserData({ ...data, id: uuidv4() });
+    const newUser = new UserData({ ...data, id: uuidv4() ,authType});
     const savedUser = await newUser.save();
     return savedUser as UserSchemaType | null; // Update the type of savedUser
   } catch (err) {
@@ -30,14 +32,7 @@ export const deleteUserData = async (
   }
 };
 
-export const getAllUsers = async () => {
-  try {
-    const connectedUsers = await UserData.find();
-    return connectedUsers;
-  } catch {
-    return null;
-  }
-};
+
 
 export const findUserById = async (id: string): Promise<string | null> => {
   try {
@@ -53,3 +48,6 @@ export const findUserById = async (id: string): Promise<string | null> => {
     throw error; // Handle the error or rethrow for higher-level handling
   }
 };
+
+
+

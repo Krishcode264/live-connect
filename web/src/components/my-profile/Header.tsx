@@ -1,8 +1,8 @@
 import React from "react";
 import ProfilePic from "../profile/profile_photo";
 import { generateSinglet } from "./Ui";
-import { useRecoilValue } from "recoil";
-import { userPreferencesState } from "@/store/atoms/user-atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userBasicInfoState, userPreferencesState } from "@/store/atoms/user-atom";
 const Header = () => {
 
   const intrests=["Yoga","Travel","Cooking","reading","Music"]
@@ -19,13 +19,14 @@ const Doublet=({property,value}:{property:string,value:string|number})=>{
   )
 
 }
-    
+
+      const [user] = useRecoilState(userBasicInfoState);
 
   return (
     <div className="w-[90%] md:w-[40%]mx-auto pb-2">
       <div className="flex flex-col justify-center items-center">
-        <ProfilePic size={40} />
-        <h2 className="text-blue-500">Krish264</h2>
+        <ProfilePic size={40} src={user.profile} iconSize={150}/>
+        <h2 className="text-blue-500">{user.name}</h2>
         <div className="flex gap-3 m-4 text-slate-300">
           <button className="bg-blue-500 px-2 p-1 rounded-xl hover:text-slate-100 ">
             Followeres 100

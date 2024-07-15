@@ -1,7 +1,7 @@
 export type User = {
   name: string;
   id: string;
- 
+   profile?:"string"
 };
 
 export type Offer = {

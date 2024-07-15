@@ -155,7 +155,7 @@ export function Meet() {
               {connectedUsers.length > 0 ? (
                 <RenderConnectedUsers />
               ) : (
-                <h3 className="text-sky-200 text-xl">
+                <h3 className="text-sky-600 text-xl">
                   there is no one joined this room
                 </h3>
               )}

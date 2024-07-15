@@ -16,4 +16,8 @@ export const userSchema = new Schema({
   intrests: { type: [String], default: [] },
   age: { type: Number, default: 0 },
   gender: { type: String, default: "unknown" },
+  profile:{type:String},
+  authType:{provider:{type:String},expires:{
+    type:String
+  }}
 });

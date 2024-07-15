@@ -1,11 +1,12 @@
 "use client"
 import React from "react";
 import { Meet } from "@/components/webRTC/meet/meet";
-import { useValidateToken } from "@/utils/hooks/validate_token";
+import { useAuth } from "@/context/authContext";
+
 import AuthNav from "@/components/profile/auth_nav";
 import Loading from "@/components/basic/loading";
 const Page = () => {
-  const {isValid,isLoading}=useValidateToken()
+ const {  isValid, isLoading } = useAuth();
    
   if(isLoading){
     return(
@@ -15,7 +16,7 @@ const Page = () => {
   return(
     <>
 
-{isValid.status ? <Meet/> : <AuthNav text={isValid.message}/>}
+{isValid?.status ? <Meet/> : <AuthNav text={isValid?.message}/>}
     </>
   )
 };

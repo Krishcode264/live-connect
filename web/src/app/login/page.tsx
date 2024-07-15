@@ -1,6 +1,6 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { z } from "zod";
@@ -8,16 +8,31 @@ import axios from "axios";
 import { userBasicInfoState } from "@/store/atoms/user-atom";
 import Link from "next/link";
 import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
-import { useSession, signIn, signOut } from "next-auth/react";
+import googlePic from '@/images/google.png'
 const LoginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 });
+import Image from "next/image";
+
+import { doSignIn } from "@/actions/authActions";
+import { useSession } from "next-auth/react";
+
+import { useEffect } from "react";
+import { useAuth } from "@/context/authContext";
 
 type FormFields = z.infer<typeof LoginSchema>;
 
 const Login = () => {
- const Router=useRouter()
+const { isValid ,setIsValid} = useAuth();
+useEffect(()=>{ 
+
+if (isValid?.status) redirect("/feed");
+console.log(isValid.status)
+},[])
+
+  const Router=useRouter()
+
   const setUser = useSetRecoilState(userBasicInfoState);
   const {
     register,
@@ -41,7 +56,7 @@ const Login = () => {
           name: name,
           id: id,
         }));
-          
+          setIsValid({status:true,message:""})
         Router.back();
       
       }
@@ -53,13 +68,12 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-full w-full ">
-      
       <div className="rounded-lg  w-[80%] md:w-[40%] mx-auto mt-4 p-3 py-4   ">
         <h4 className="mx-auto text-center text-2xl text-slate-900 p-2">
-         Sign in 
+          Sign in
         </h4>
         <form
-          action=""
+          
           className="flex flex-col rounded-lg gap-5 p-2  "
           onSubmit={handleSubmit(onSubmit)}
         >
@@ -84,7 +98,8 @@ const Login = () => {
 
           <button
             disabled={isSubmitting}
-            className="p-2 rounded-xl  text-slate-200 bg-blue-400 font-medium "
+            type="submit"
+            className="p-2 rounded-xl text-xl hover:bg-blue-200 text-slate-500 bg-blue-100 font-medium "
           >
             Login
             {isSubmitting && (
@@ -92,11 +107,15 @@ const Login = () => {
             )}
           </button>
           <button
+          type="button"
             disabled={isSubmitting}
-            onClick={()=>signIn()}
-            className="p-2 rounded-xl bg-blue-400 text-slate-200 font-medium"
+            onClick={() =>
+              doSignIn("google", window.sessionStorage.getItem("privousRoute"))
+            }
+            className="p-2 hover:bg-blue-200 rounded-xl text-xl bg-blue-100 text-slate-500 font-medium flex items-center justify-center gap-2"
           >
-            Login with Google
+            <p>Login with </p>
+            <Image src={googlePic} className="w-24 mt-2" alt="google" />
           </button>
           {errors.root && (
             <p className="text-red-400 ">{errors.root.message}</p>

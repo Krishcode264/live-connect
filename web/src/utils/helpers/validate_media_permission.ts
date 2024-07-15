@@ -1,6 +1,6 @@
-import { mediaStreamState } from "@/app/store/atoms/media-stream-atom";
+import { mediaStreamState } from "@/store/atoms/media-stream-atom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { peerConnectionState } from "@/app/store/selectors/pc-selector";
+import { peerConnectionState } from "@/store/selectors/pc-selector";
 
 export const useGetUserMediaStream = () => {
 

@@ -14,7 +14,7 @@ async function checkTokenValidity(
   if (user) {
     if (req.path == "/validateToken") {
       res.send(user);
-      console.log("valid token")
+    //  console.log("valid token")
     } else {
       next();
     }

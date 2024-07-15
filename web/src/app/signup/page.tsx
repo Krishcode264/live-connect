@@ -6,7 +6,7 @@ import { z } from "zod";
 import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { userBasicInfoState } from "../store/atoms/user-atom";
+import { userBasicInfoState } from "@/store/atoms/user-atom";
 import { useSetRecoilState } from "recoil";
 import googleLogo from '../images/google.png'
 import Image from "next/image";

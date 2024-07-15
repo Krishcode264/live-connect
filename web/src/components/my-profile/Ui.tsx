@@ -1,13 +1,20 @@
+"use client"
 import { buttonBaseClasses } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import ClearIcon from "@mui/icons-material/Clear";
 
 export const InfoTemplate=({property,value}:{property:string,value:string|number})=>{
+
+ const [defaultvalue,setDefaultValue]=useState(value)
+
+    useEffect(() => {
+      setDefaultValue(value);
+    }, [value]);
     return(
         <div className='p-2  w-full md:w-[50%]'>
             <h1 className='m-0 text-slate-900 my-1 font-semibold'>{property}</h1>
-            <input type="text" className='w-full  text-lg p-2 outline outline-1 outline-slate-200 rounded-xl text-slate-400' value={value}/>
+            <input type="text" value={defaultvalue} onChange={(e)=>setDefaultValue(()=>e.target.value)} />
         </div>
     )
 }

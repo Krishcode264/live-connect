@@ -1,9 +1,32 @@
-import React from 'react'
+import ProfileView from '@/components/feed/ProfileView'
+import axios from 'axios';
+import React, { Suspense } from 'react'
 
-const page = () => {
-  return (
-    <div>feed page</div>
-  )
+async function getFeedUsers(){
+  try{
+const res=await axios.get(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/feed/getFeedUsers`)
+
+return res;
+  }catch(err){
+console.error("error fetching feed data",err)
+
+  }
 }
 
-export default page
+export default async function Page() {
+  
+  const users=await getFeedUsers();
+
+  return (
+    <div className='flex gap-4 flex-wrap p-4'>
+  
+      <Suspense fallback={<div>Loading...</div>}>
+       {
+        users?.data.map((user)=>{
+          return <ProfileView user={user} key={user.id}/>
+        })
+       }
+      </Suspense>
+    </div>
+  );
+}
