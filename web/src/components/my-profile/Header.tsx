@@ -6,7 +6,7 @@ import { userBasicInfoState, userPreferencesState } from "@/store/atoms/user-ato
 import p1 from '@/images/p1.jpeg'
 import p2 from "@/images/p2.jpeg";
 import p3 from "@/images/p3.webp";
-import p4 from "@/images/profile.jpg";
+import p4 from "@/images/duf.webp";
 const Header = () => {
 
   const intrests=["Yoga","Travel","Cooking","reading","Music"]

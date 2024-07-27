@@ -1,10 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import k1 from "@/images/k1.jpg";
-import k2 from "@/images/k2.jpg";
-import k3 from "@/images/k3.jpg";
-import k4 from "@/images/profile.jpg";
+
 import ProfilePic from "@/images/duf.webp";
 
 interface UserInfoProps{
