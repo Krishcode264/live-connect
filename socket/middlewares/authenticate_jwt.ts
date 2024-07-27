@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import { UserData } from "../mongoose/model/userModel";
+import { UserData } from "../mongoose/schemas/userSchema";
 import type { User } from "../types/types";
 async function checkTokenValidity(
   req: Request,
@@ -14,7 +14,7 @@ async function checkTokenValidity(
   if (user) {
     if (req.path == "/validateToken") {
       res.send(user);
-    //  console.log("valid token")
+     console.log("valid token")
     } else {
       next();
     }

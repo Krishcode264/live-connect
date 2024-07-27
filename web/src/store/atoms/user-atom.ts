@@ -1,13 +1,12 @@
 "use client";
 import { UserSchemaType } from "../../types/types";
 import { atom } from "recoil";
+
 export interface UserBasicInfo {
   name: string;
   id: string;
-  email: string;
   age: number;
   gender: string;
-  user_name: string;
   profile: string;
   fetched: boolean;
 }
@@ -17,10 +16,8 @@ export const userBasicInfoState = atom<UserBasicInfo>({
   default: {
     name: "",
     id: "",
-    email: "",
     age: 0,
     gender: "",
-    user_name: "",
     profile: "",
     fetched: false,
   },

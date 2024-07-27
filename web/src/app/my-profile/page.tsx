@@ -10,11 +10,6 @@ import { userPreferencesState } from "@/store/atoms/user-atom";
 import { useAuth } from "@/context/authContext";
 const page = () => {
 const {isValid,isLoading}=useAuth();
-useEffect(()=>{
-  const token = sessionStorage?.getItem("token");
-
-})
-
 
   return (
     <div className=" rounded-lg p-7 flex-1 h-[90%]">

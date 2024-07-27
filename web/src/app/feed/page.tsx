@@ -1,4 +1,5 @@
 import ProfileView from '@/components/feed/ProfileView'
+import type { User } from '@/types/types';
 import axios from 'axios';
 import React, { Suspense } from 'react'
 
@@ -22,7 +23,7 @@ export default async function Page() {
   
       <Suspense fallback={<div>Loading...</div>}>
        {
-        users?.data.map((user)=>{
+        users?.data.map((user:User)=>{
           return <ProfileView user={user} key={user.id}/>
         })
        }

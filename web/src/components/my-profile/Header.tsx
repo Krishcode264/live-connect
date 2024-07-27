@@ -1,8 +1,12 @@
 import React from "react";
 import ProfilePic from "../profile/profile_photo";
-import { generateSinglet } from "./Ui";
+import { generateSinglet, ImageGallary } from "./Ui";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userBasicInfoState, userPreferencesState } from "@/store/atoms/user-atom";
+import p1 from '@/images/p1.jpeg'
+import p2 from "@/images/p2.jpeg";
+import p3 from "@/images/p3.webp";
+import p4 from "@/images/profile.jpg";
 const Header = () => {
 
   const intrests=["Yoga","Travel","Cooking","reading","Music"]
@@ -10,6 +14,10 @@ const Header = () => {
   const lnaguageslearning=["Spanish","French"];
   const countiresVisit=["Spain","France","Switzerland","US"];
 const user_preferences_state=useRecoilValue(userPreferencesState);
+const userBasicstate=useRecoilValue(userBasicInfoState)
+  console.log(user_preferences_state,"user prefrence state");
+  console.log(userBasicstate,"user basic info state");
+
 const Doublet=({property,value}:{property:string,value:string|number})=>{
   return(
     <div className="flex flex-col gap-1 ">
@@ -21,19 +29,13 @@ const Doublet=({property,value}:{property:string,value:string|number})=>{
 }
 
       const [user] = useRecoilState(userBasicInfoState);
-
+const imageArray=[p1,p2,p3,p4]
   return (
     <div className="w-[90%] md:w-[40%]mx-auto pb-2">
       <div className="flex flex-col justify-center items-center">
         <ProfilePic size={40} src={user.profile} iconSize={150}/>
         <h2 className="text-blue-500">{user.name}</h2>
         <div className="flex gap-3 m-4 text-slate-300">
-          <button className="bg-blue-500 px-2 p-1 rounded-xl hover:text-slate-100 ">
-            Followeres 100
-          </button>
-          <button className="bg-blue-500 px-2 p-1 rounded-xl hover:text-slate-100  ">
-            Following 99
-          </button>
           <button className="bg-blue-500 px-2 p-1 rounded-xl hover:text-slate-100  ">
             Friends 22
           </button>
@@ -57,6 +59,8 @@ const Doublet=({property,value}:{property:string,value:string|number})=>{
           <Doublet property="Email" value="email@gmail.com" />
         </div>
       </div>
+      <h4 className="font-semibold text-xl mb-3">Your photos</h4>
+      <ImageGallary imagearray={imageArray}/>
       <h2 className="text-slate-800  text-2xl mb-3">Intrests</h2>
       <div className="flex flex-wrap gap-4 p-1">{generateSinglet(intrests)}</div>
       <h2 className="text-slate-800  text-2xl mb-3">Languages</h2>

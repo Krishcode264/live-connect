@@ -16,7 +16,7 @@ export const doSignOut=async()=>{
 export const verifyGoogleAuthUser=async(s:Session)=>{
     
   const res = await axios.post(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/auth/google`,s);
-//console.log(res.data, "returned from server to verifyGoogleAuthUse");
+console.log(res.data, "returned from server to verifyGoogleAuthUse");
       return res.data 
 }
 

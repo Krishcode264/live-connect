@@ -1,14 +1,12 @@
 import express, { Request, Response } from "express";
 export const authRouter = express.Router();
-import { saveUserData } from "../mongoose/mongo_helpers/helper";
-import { UserData } from "../mongoose/model/userModel";
+import { PhotosData } from "../mongoose/schemas/photoSchema";
+import  UserService from "../Services/UserService/userService";
+import { UserData } from "../mongoose/schemas/userSchema";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
-const checkUserAlreadyExist = async (email: string) => {
-  const users = await UserData.find({ email });
-  return users;
-};
+
 const generateToken = (data: any) => {
   // console.log(process.env.JWT_SECRET, "process");
   const secretKey = process.env.JWT_SECRET as string; // Replace with your actual secret key
@@ -20,10 +18,10 @@ const handleUserSignup = async (req: Request, res: Response) => {
   const { email } = req.body;
   // console.log(email);
   try {
-    const alreadyExistedUserWithSameEmail = await checkUserAlreadyExist(email);
+    const alreadyExistedUserWithSameEmail = await UserService.checkUserAlreadyExist(email);
   //  console.log(alreadyExistedUserWithSameEmail);
     if (alreadyExistedUserWithSameEmail.length === 0) {
-      const createdUser = await saveUserData(req.body, {
+      const createdUser = await UserService.saveUserData(req.body, {
         provider: "credencial",
       });
       if (createdUser) {
@@ -91,15 +89,18 @@ async function googleLogin(req: Request, res: Response) {
  // console.log("got req for google auth", req.body);
   const { user, expires } = req.body;
 
-  const userExists = await checkUserAlreadyExist(user.email);
+  const userExists = await UserService.checkUserAlreadyExist(user.email);
   if (userExists.length === 0) {
-    const savedUser = await saveUserData({...user,profile:user.image}, { provider: "google", expires });
-    if (savedUser)
-      res.send({
-        status: true,
-        user:savedUser,
-        messages: "user loggoed in with google success (new user)",
-      });
+    const savedUser = await UserService.saveUserData({...user,profile:user.image}, { provider: "google", expires });
+    if (savedUser){
+      const {name,gender,age,id,profile}=savedUser;
+res.send({
+  status: true,
+  user: { name, age, gender ,id,profile},
+  messages: "user loggoed in with google success (new user)",
+});
+    }
+      
     else res.send({ status: false, messages: "error saving user " });
   } else {
     const expirationDate = new Date(expires);
@@ -114,9 +115,10 @@ async function googleLogin(req: Request, res: Response) {
         messages: "session has expired with google , try loggin again ...",
       });
     } else {
+      const { name, age, gender, id, profile }=userExists[0];
       res.send({
         status: true,
-        user:userExists[0],
+        user: { name, age, gender, id, profile },
         messages: "auth success with google ",
       });
     }

@@ -7,8 +7,12 @@ import k3 from "@/images/k3.jpg";
 import k4 from "@/images/profile.jpg";
 import ProfilePic from "@/images/duf.webp";
 
-
-const UserInfo=({name,age,location})=>{
+interface UserInfoProps{
+  name:string,
+  age:number,
+  location:string
+}
+const UserInfo=({name,age,location}:UserInfoProps)=>{
   return (
 
       <div className="absolute p-1 text-slate-100 font-semibold  bottom-0 left-0 translate-x-2">

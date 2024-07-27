@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn.pixabay.com",
       },
+      {
+        protocol: "https",
+        hostname:"krish-b264.s3.ap-south-1.amazonaws.com/*",
+      },
     ],
   },
 };

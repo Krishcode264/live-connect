@@ -14,16 +14,14 @@ const LoginSchema = z.object({
   password: z.string().min(8),
 });
 import Image from "next/image";
-
 import { doSignIn } from "@/actions/authActions";
-import { useSession } from "next-auth/react";
-
 import { useEffect } from "react";
 import { useAuth } from "@/context/authContext";
 
 type FormFields = z.infer<typeof LoginSchema>;
 
 const Login = () => {
+
 const { isValid ,setIsValid} = useAuth();
 useEffect(()=>{ 
 

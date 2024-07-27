@@ -28,5 +28,6 @@ export type UserSchemaType = {
   intrests?: string[];
   age?: number;
   gender?: string;
+  profile?:string;
   email:string;
 };

@@ -66,19 +66,10 @@ const sideBarOptions = useMemo(()=>["Messages", "Feed","Rooms", "My Profile", "S
    []
  );
  
-console.log("sidebar rendered")
+
   return (
     <div className="rounded-lg h-[90%] w-[8%]   md:w-[15%] sm:p-2 flex flex-col   justify-start  ">
-      {/* {user.profile ? (
-        <>
-          <ProfilePic size={12} src={user.profile} />
-        </>
-      ) : (
-        <AccountCircleIcon className="mx-auto text-[50px] border-none hover:cursor-pointer" />
-      )}{" "}
-      <h3 className="text-center sm:text-xl text-blue-600 font-bold">
-        {user.name}
-      </h3> */}
+
       <Sidebarheader/>
       <div className="flex flex-col gap-2 text-center  text-l mt-12  w-full  mx-auto">
         {generateSideBarOptions(sideBarOptions, icons)}
