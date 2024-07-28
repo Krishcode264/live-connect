@@ -1,3 +1,4 @@
+import type {  Types } from "mongoose";
 
 export type User = {
   name: string;
@@ -17,7 +18,7 @@ export type Candidate = {
   persontoHandshake: User;
   user: User;
 };
-
+type ObjectId = Types.ObjectId;
 export type UserSchemaType = {
   name: string;
   createdAt: Date;
@@ -28,5 +29,14 @@ export type UserSchemaType = {
   intrests?: string[];
   age?: number;
   gender?: string;
+  profile?:string;
   email:string;
+};
+export type photoSchematype = {
+  key: string;
+  imageUrl: string;
+  uploader: ObjectId;
+  uploadedAt?: Date;
+  urlExpirationTime: Date;
+  likes?: [ObjectId];
 };

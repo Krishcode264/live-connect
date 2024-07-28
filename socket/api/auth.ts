@@ -1,15 +1,14 @@
 import express, { Request, Response } from "express";
 export const authRouter = express.Router();
-import { saveUserData } from "../mongoose/mongo_helpers/helper";
-import { UserData } from "../mongoose/model/userModel";
+import { PhotosData } from "../mongoose/schemas/photoSchema";
+import  UserService from "../Services/UserService/userService";
+import { UserData } from "../mongoose/schemas/userSchema";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
-const checkUserAlreadyExist = async (email: string) => {
-  const users = await UserData.find({ email });
-  return users;
-};
+
 const generateToken = (data: any) => {
-  console.log(process.env.JWT_SECRET, "process");
+  // console.log(process.env.JWT_SECRET, "process");
   const secretKey = process.env.JWT_SECRET as string; // Replace with your actual secret key
   const token = jwt.sign(data, secretKey, { expiresIn: "1h" });
 
@@ -17,12 +16,14 @@ const generateToken = (data: any) => {
 };
 const handleUserSignup = async (req: Request, res: Response) => {
   const { email } = req.body;
-  console.log(email);
+  // console.log(email);
   try {
-    const alreadyExistedUserWithSameEmail = await checkUserAlreadyExist(email);
-    console.log(alreadyExistedUserWithSameEmail);
+    const alreadyExistedUserWithSameEmail = await UserService.checkUserAlreadyExist(email);
+  //  console.log(alreadyExistedUserWithSameEmail);
     if (alreadyExistedUserWithSameEmail.length === 0) {
-      const createdUser = await saveUserData(req.body);
+      const createdUser = await UserService.saveUserData(req.body, {
+        provider: "credencial",
+      });
       if (createdUser) {
         const token = generateToken({
           name: createdUser.name,
@@ -50,6 +51,16 @@ const handleUserLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const userwithEmail = await UserData.findOne({ email });
   if (userwithEmail) {
+    if (
+      userwithEmail.authType?.provider !== "credencial"
+    ) {
+      res.send({
+        status: "error",
+        message:
+          "You tried signing in with a different authentication method than the one you used during signup",
+      });
+      return;
+    }
     if (userwithEmail.password === password) {
       const token = generateToken({
         name: userwithEmail.name,
@@ -73,5 +84,46 @@ const handleUserLogin = async (req: Request, res: Response) => {
     });
   }
 };
+
+async function googleLogin(req: Request, res: Response) {
+ // console.log("got req for google auth", req.body);
+  const { user, expires } = req.body;
+
+  const userExists = await UserService.checkUserAlreadyExist(user.email);
+  if (userExists.length === 0) {
+    const savedUser = await UserService.saveUserData({...user,profile:user.image}, { provider: "google", expires });
+    if (savedUser){
+      const {name,gender,age,id,profile}=savedUser;
+res.send({
+  status: true,
+  user: { name, age, gender ,id,profile},
+  messages: "user loggoed in with google success (new user)",
+});
+    }
+      
+    else res.send({ status: false, messages: "error saving user " });
+  } else {
+    const expirationDate = new Date(expires);
+    const currentdate=new Date();
+
+    const isExpired = expirationDate <currentdate;
+
+    console.log(isExpired,expirationDate,new Date());
+    if (isExpired) {
+      res.send({
+        status: false,
+        messages: "session has expired with google , try loggin again ...",
+      });
+    } else {
+      const { name, age, gender, id, profile }=userExists[0];
+      res.send({
+        status: true,
+        user: { name, age, gender, id, profile },
+        messages: "auth success with google ",
+      });
+    }
+  }
+}
 authRouter.post("/signup", handleUserSignup);
 authRouter.post("/login", handleUserLogin);
+authRouter.post("/google", googleLogin);

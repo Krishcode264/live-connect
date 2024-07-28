@@ -11,6 +11,18 @@ const config: Config = {
       mb: "370px",
       ...defaultTheme.screens,
     },
+    extend: {
+      objectFit: {
+        cover: "cover",
+        contain: "contain",
+        fill: "fill",
+        none: "none",
+        "scale-down": "scale-down",
+      },
+    },
+  },
+  variants: {
+    objectFit: ["responsive"],
   },
   plugins: [],
 };

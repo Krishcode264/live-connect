@@ -12,17 +12,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/server": "^4.10.5",
+    "@aws-sdk/client-s3": "^3.616.0",
+    "@aws-sdk/s3-request-presigner": "^3.616.0",
     "@types/dotenv": "^8.2.0",
     "@types/uuid": "^9.0.8",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "graphql": "^16.9.0",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
     "nodemon": "^3.0.2",
     "socket.io": "^4.7.2",
+    "ts-node": "^10.9.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
@@ -31,5 +36,6 @@
     "@types/mongoose": "^5.11.97",
     "cross-env": "^7.0.3",
     "typescript": "^5.3.3"
-  }
+  },
+  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
 }

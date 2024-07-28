@@ -1,11 +1,10 @@
 import { Candidate, Offer, User, type UserSchemaType } from "../types/types";
 import { Socket } from "socket.io";
-import { findUserById } from "../mongoose/mongo_helpers/helper";
+import UserService from "../Services/UserService/userService";
 import { io } from "..";
-import { UserData } from "../mongoose/model/userModel";
+import { UserData } from "../mongoose/schemas/userSchema";
 
 export function socketioConnection() {
-  
   io.on("connection", async (socket: Socket) => {
     console.log("user connected", socket.id);
     //getting all active users, sending to newly connected user
@@ -19,15 +18,15 @@ export function socketioConnection() {
       socket.emit("activeUsers", activeUsers);
     });
 
-//sending newly connected user to alredy active members
+    //sending newly connected user to alredy active members
     socket.on("newUserConnected", async (user: User) => {
-      console.log("new user connected", user);
-      UserData.findOneAndUpdate(
-        { id: user.id },
-        { socketID: socket.id, isConnected: true },
-        { new: true }
-      ).then((data) => {
+      UserService.updateUserData({id:user.id}, {
+        socketID: socket.id,
+        isConnected: true,
+      }).then((data) => {
+        console.log(data)
         const { name, id } = user;
+        console.log("new user connected", user);
         socket.broadcast.emit("newUserConnected", { name, id });
       });
     });
@@ -35,11 +34,10 @@ export function socketioConnection() {
     //user disconnetion
 
     socket.on("disconnect", () => {
-      console.log("disconnection with user comming from the client ")
-      UserData.findOneAndUpdate(
+      console.log("disconnection with user comming from the client ");
+      UserService.updateUserData(
         { socketID: socket.id },
-        { socketID: "", isConnected: false },
-        { new: true }
+        { socketID: "", isConnected: false }
       ).then((data): any => {
         if (data) {
           console.log("user dissconnected ", data);
@@ -58,7 +56,7 @@ export function socketioConnection() {
       async ({ createdOffer: offer, requestedUser, user }: Offer) => {
         console.log("got   step 1 : got offer ", requestedUser, user);
         if (requestedUser) {
-          findUserById(requestedUser.id).then((socketID) => {
+          UserService.getUserSocketIdById(requestedUser.id).then((socketID) => {
             if (socketID) {
               io.to(socketID).emit("receivedOfferForRTC", {
                 user,
@@ -78,7 +76,7 @@ export function socketioConnection() {
       async ({ answer, receivedUser }: Offer) => {
         console.log("getting create answer from req user", receivedUser);
         if (receivedUser) {
-          findUserById(receivedUser.id).then((socketID) => {
+          UserService.getUserSocketIdById(receivedUser.id).then((socketID) => {
             if (socketID) {
               io.to(socketID).emit("receivedAnswerToRTC", {
                 answer,
@@ -101,12 +99,14 @@ export function socketioConnection() {
           "person who sent it",
           user
         );
-        findUserById(persontoHandshake.id).then((socketID) => {
-          if (socketID) {
-            io.to(socketID).emit("candidate", { candidate, user });
-            console.log("received  target user to send candidate");
+        UserService.getUserSocketIdById(persontoHandshake.id).then(
+          (socketID) => {
+            if (socketID) {
+              io.to(socketID).emit("candidate", { candidate, user });
+              console.log("received  target user to send candidate");
+            }
           }
-        });
+        );
       }
     );
   });
