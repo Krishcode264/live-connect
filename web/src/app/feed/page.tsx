@@ -9,9 +9,10 @@ async function getFeedUsers() {
       `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/feed/getFeedUsers`
     );
 
-    return res;
+    return res.data;
   } catch (err) {
     console.error("error fetching feed data", err);
+    return [];
   }
 }
 
@@ -21,7 +22,7 @@ export default async function Page() {
   return (
     <div className="flex gap-4 flex-wrap p-4">
       <Suspense fallback={<div>Loading...</div>}>
-        {users?.data.map((user:FeedUserType) => {
+        {users?.map((user:FeedUserType) => {
           return <ProfileView user={user} key={user.id} />;
         })}
       </Suspense>
