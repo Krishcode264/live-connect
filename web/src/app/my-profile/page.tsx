@@ -8,7 +8,7 @@ import AuthNav from "@/components/profile/auth_nav";
 
 import { userPreferencesState } from "@/store/atoms/user-atom";
 import { useAuth } from "@/context/authContext";
-const page = () => {
+const Page = () => {
 const {isValid,isLoading}=useAuth();
 
   return (
@@ -27,4 +27,4 @@ const {isValid,isLoading}=useAuth();
   );
 };
 
-export default page;
+export default Page;

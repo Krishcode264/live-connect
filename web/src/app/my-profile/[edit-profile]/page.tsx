@@ -5,7 +5,7 @@ import { userBasicInfoState } from '@/store/atoms/user-atom';
 import React, { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-const page = () => {
+const Page = () => {
     const intrests = ["Yoga", "Travel", "Cooking", "reading", "Music"];
     const languagesSpeak = ["Marathi", "Hindi", "English"];
     const lnaguageslearning = ["Spanish", "French"];
@@ -60,4 +60,4 @@ const page = () => {
   );
 }
 
-export default page
+export default Page

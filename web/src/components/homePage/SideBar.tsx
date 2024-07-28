@@ -13,21 +13,22 @@ import { verifyGoogleAuthUser } from '@/actions/authActions';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userInfoState } from '@/store/selectors/user-selector';
 import { userBasicInfoState } from '@/store/atoms/user-atom';
+import type { ReactJSXElement } from 'node_modules/@emotion/react/types/jsx-namespace';
 
 
-const generateSideBarOptions=(options:string[],icon: React.JSX.Element[] | (string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined)[])=>{
-return options.map((option:string,index)=>{
+const generateSideBarOptions=(options:{name:string,icon:ReactJSXElement}[])=>{
+return options.map((option)=>{
 
     return (
       <Link
-      key={option}
-        href={`/${option.toLocaleLowerCase().split(" ").join("-")}`}
+       key={option.name}
+        href={`/${option.name.toLocaleLowerCase().split(" ").join("-")}`}
         className=" rounded-xl  hover:bg-slate-100 hover:cursor-pointer p-2 active:bg-slate-100"
       >
         <button className=" w-full  h-auto flex gap-2 items-center   mx-auto  ">
-          {icon[index]}
+          {option.icon}
 
-          <p className=' hidden md:block'> {option}</p>
+          <p className=' hidden md:block'> {option.name}</p>
         </button>
       </Link>
     );
@@ -54,14 +55,14 @@ console.log("user rendered ",user)
 
 const SideBar = () => {
 
-const sideBarOptions = useMemo(()=>["Messages", "Feed","Rooms", "My Profile", "Settings"],[]);
+
  const icons = useMemo(
    () => [
-     <ChatIcon />,
-     <StreamIcon />,
-     <GroupsIcon />,
-     <AccountCircleIcon />,
-     <SettingsIcon />,
+     { name: "Messages", icon: <ChatIcon /> },
+     { name: "Feed", icon: <StreamIcon /> },
+     { name: "Rooms", icon: <GroupsIcon /> },
+     { name: "My Profile", icon: <AccountCircleIcon /> },
+     { name: "Settings", icon: <SettingsIcon /> },
    ],
    []
  );
@@ -72,7 +73,7 @@ const sideBarOptions = useMemo(()=>["Messages", "Feed","Rooms", "My Profile", "S
 
       <Sidebarheader/>
       <div className="flex flex-col gap-2 text-center  text-l mt-12  w-full  mx-auto">
-        {generateSideBarOptions(sideBarOptions, icons)}
+        {generateSideBarOptions(icons)}
       </div>
     </div>
   );

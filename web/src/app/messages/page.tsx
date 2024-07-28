@@ -86,7 +86,7 @@ const DetailedChatView=()=>{
   );
 }
 
-const page = () => {
+const Page = () => {
 const {isLoading,isValid}=useAuth()
 
     return (
@@ -104,4 +104,4 @@ const {isLoading,isValid}=useAuth()
     );
 }
 
-export default page
+export default Page

@@ -3,7 +3,7 @@ import { doSignOut } from '@/actions/authActions'
 import React from 'react'
 import useResetAllState from "@/hooks/useResetAllState"; 
 import { useAuth } from '@/context/authContext';
-const page = () => {
+const Page = () => {
  const {setIsValid}=useAuth()
     const resetAllState = useResetAllState();
  const handleSignOut = () => {
@@ -23,4 +23,4 @@ setIsValid({status:false,message:"you are looged out"})
   );
 }
 
-export default page
+export default Page
