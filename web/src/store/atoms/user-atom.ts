@@ -1,16 +1,18 @@
 "use client";
 import { UserSchemaType } from "../../types/types";
 import { atom } from "recoil";
-
+import { PhotoType } from "../../types/types";
 export interface UserBasicInfo {
   name: string;
   id: string;
   age: number;
+  email:string;
   gender: string;
   profile: string;
   fetched: boolean;
 }
-// Basic user info
+
+
 export const userBasicInfoState = atom<UserBasicInfo>({
   key: "user-basic-info-state",
   default: {
@@ -18,6 +20,7 @@ export const userBasicInfoState = atom<UserBasicInfo>({
     id: "",
     age: 0,
     gender: "",
+    email:"",
     profile: "",
     fetched: false,
   },
@@ -46,3 +49,9 @@ export const userPreferencesState = atom({
     fetched:false
   }
 });
+
+//user photos 
+export const UserPhotosState=atom<PhotoType[]|[]>({
+  key:"user-photos-state",
+  default:[]
+})

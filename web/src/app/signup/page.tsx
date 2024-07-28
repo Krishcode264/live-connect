@@ -10,6 +10,8 @@ import { userBasicInfoState } from "@/store/atoms/user-atom";
 import { useSetRecoilState } from "recoil";
 import googleLogo from '../images/google.png'
 import Image from "next/image";
+import { doSignIn } from "@/actions/authActions";
+import googlePic from "@/images/google.png";
 const SignUpSchema = z.object({
   name: z.string().min(4),
   email: z.string().email(),
@@ -95,6 +97,17 @@ const Signup = () => {
             <p className="text-red-400 ">{errors.password.message}</p>
           )}
           <button
+            type="button"
+            disabled={isSubmitting}
+            onClick={() =>
+              doSignIn("google", window.sessionStorage.getItem("privousRoute"))
+            }
+            className="p-2 hover:bg-blue-200 rounded-xl text-xl bg-blue-100 text-slate-500 font-medium flex items-center justify-center gap-2"
+          >
+            <p>sign up with </p>
+            <Image src={googlePic} className="w-24 mt-2" alt="google" />
+          </button>
+          <button
             disabled={isSubmitting}
             className="p-2 rounded-xl text-slate-200  bg-blue-600 font-medium "
           >
@@ -103,7 +116,6 @@ const Signup = () => {
               <WorkspacesOutlinedIcon className="animate-spin" />
             )}
           </button>
-
 
           {errors.root && (
             <p className="text-red-400  ">{errors.root.message}</p>

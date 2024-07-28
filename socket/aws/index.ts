@@ -20,7 +20,15 @@ export class AwsHandler {
       Key: key,
       ContentType: type,
     });
-    const presignedUrl = await getSignedUrl(this.s3Client, Command);
-    return presignedUrl;
+    return await getSignedUrl(this.s3Client, Command);
+   
+  }
+
+  static async getObjectUrl(key:string,expiresIn:number){
+    const command=new GetObjectCommand({
+      Bucket:"krish-b264",
+      Key:key
+    })
+    return await getSignedUrl(this.s3Client,command,{expiresIn})
   }
 }

@@ -4,7 +4,7 @@ const uploadRouter = express.Router();
 import { AwsHandler } from "../aws";
 import { photoSchema, PhotosData } from "../mongoose/schemas/photoSchema";
 import { UserData } from "../mongoose/schemas/userSchema";
-
+import { PhotoService } from "../Services/PhotoService/photoService";
 export async function createPresignedUrl(req: Request, res: Response) {
   const { id, fileName, type } = req.query;
 
@@ -20,20 +20,28 @@ export async function createPresignedUrl(req: Request, res: Response) {
 
 async function handleFileUploadSuccess(req: Request, res: Response) {
   const { key, id } = req.query;
-  console.log(id,"id of the user ")
   try {
     const user = await UserData.findOne({ id });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    await new PhotosData({
-      key: key,
-      uploader: user._id, 
-    }).save();
-
-    console.log("image save success", key);
-    res.status(200).send({ message: "we saved your image url to databse " });
-  } catch {}
+    if (typeof key == "string" && user._id) {
+      const url = await AwsHandler.getObjectUrl(key,1800);
+     const photo= await PhotoService.savePhoto({
+        key: key,
+        imageUrl: url,
+        uploader: user._id,
+        urlExpirationTime:new Date(new Date().getTime()+1600*1000),
+      });
+      console.log("image save success", photo);
+      res
+        .status(200)
+        .send({ message: "we saved your image url to databse ", photo });
+    }
+  } catch (err) {
+    console.log(err, "err");
+    res.status(404).json({ message: "something went wrong with image upload" });
+  }
 }
 
 uploadRouter.use("/getPresignedUrl", createPresignedUrl);

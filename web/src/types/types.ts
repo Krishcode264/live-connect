@@ -1,3 +1,5 @@
+import type { Schema } from "zod";
+
 export type User = {
   name: string;
   id: string;
@@ -31,3 +33,18 @@ export type UserSchemaType = {
   age?: number;
   gender?: string;
 };
+export type PhotoType = {
+  imageUrl: string;
+  uploadedAt?: Date;
+  likes?: [string];
+  _id:string
+};
+ export  interface FeedUserType {
+    name: string;
+    id: string;
+    _id?: string;
+    age: number;
+    profile:string;
+    location: string;
+    photos: PhotoType[];
+  }

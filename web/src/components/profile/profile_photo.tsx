@@ -20,6 +20,7 @@ const ProfilePic = ({size,src,iconSize}:{size?:number,iconSize?:number,src:strin
           alt="profile pic"
           width={size}
           height={size}
+          unoptimized={true}
         />
       ) : (
        

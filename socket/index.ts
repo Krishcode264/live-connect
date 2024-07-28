@@ -28,6 +28,7 @@ async function init() {
   app.use("/auth", authRouter);
   app.use("/feed", feedRouter);
   app.use("/uploads", uploadRouter);
+  
   app.get("/userPreferencesState", (req, res) => {
     res.send("success");
   });

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-
+import { FeedUserType } from "@/types/types";
 import ProfilePic from "@/images/duf.webp";
 
 interface UserInfoProps{
@@ -23,8 +23,8 @@ const UserInfo=({name,age,location}:UserInfoProps)=>{
   );
 }
 
-export const PhotosPopup = ({user}) => {
-  const photosArray = [user?.profile];
+export const PhotosPopup = ({user}:{user:FeedUserType}) => {
+  const photosArray = [{imageUrl:user.profile},...user.photos];
   const [index, setIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -42,24 +42,28 @@ export const PhotosPopup = ({user}) => {
 
   return (
     <div
-      className="relative "
+      className="relative w-60 h-60 "
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {photosArray[index] ? (
+      {photosArray[index].imageUrl ? (
         <Image
           className="w-full h-full rounded-xl"
-          src={photosArray[index]}
+          src={photosArray[index].imageUrl}
           width={40}
           height={40}
           alt="photo"
+          unoptimized={true}
         />
       ) : (
         <Image
-            src={ProfilePic}
-            width={100}
-            height={100}
-            className="w-full h-full rounded-xl" alt={""}        />
+          src={ProfilePic}
+          width={100}
+          height={100}
+          className="w-full h-full rounded-xl"
+          alt={""}
+          unoptimized={true}
+        />
       )}
       <div className=" bg-gradient-to-b hover:cursor-pointer hover:from-black/0  via-black/50  to-black/70 hover:to-black/100  absolute w-full h-full z-10  rounded-xl inset-0">
         {<UserInfo name={user.name} age={user.age} location={user.location} />}
@@ -68,12 +72,12 @@ export const PhotosPopup = ({user}) => {
   );
 };
 
-const ProfileView = ({user}) => {
+const ProfileView = ({user}:{user:FeedUserType}) => {
   const handleProfileViewClick=()=>{
     console.log("profile view clicked",user.id)
   }
   return (
-    <div onClick={handleProfileViewClick} className="w-60 border   h-60 rounded-xl   ">
+    <div onClick={handleProfileViewClick} className=" border rounded-xl    ">
       <PhotosPopup user={user} />
     </div>
   );

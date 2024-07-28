@@ -7,10 +7,11 @@ import Image, { type StaticImageData } from "next/image";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 
-import { convertImageTo64bitString } from "@/utils/helpers/helper";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userInfoState } from "@/store/selectors/user-selector";
-
+import { userBasicInfoState, UserPhotosState} from "@/store/atoms/user-atom";
+import type { PhotoType } from "@/types/types";
+import { UploadPhoto } from "./Uploads";
 export const InfoTemplate = ({
   property,
   value,
@@ -18,7 +19,7 @@ export const InfoTemplate = ({
   property: string;
   value: string | number;
 }) => {
-  const [defaultvalue, setDefaultValue] = useState("wewfhgehjg");
+  const [defaultvalue, setDefaultValue] = useState<string|number>("wewfhgehjg");
 
   useEffect(() => {
     setDefaultValue(value);
@@ -96,89 +97,5 @@ export const InfoTemplateWithIntrests = ({
   );
 };
 
-export const UploadPhoto = () => {
-  const addPhotoRef = useRef(null);
-  const { id } = useRecoilValue(userInfoState);
 
-  const handleAddIconClick = () => {
-    if (addPhotoRef.current) {
-      addPhotoRef?.current?.click();
-    }
-  };
 
-  const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      const files: any = e.target.files;
-      if (files[0]) {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/uploads/getPresignedUrl`,
-          { params: { id, fileName: files[0].name, type: files[0].type } }
-        );
-        const { url, key } = res.data;
-        console.log(url, key,"key and url from server");
-        const sendTos3 = await axios.put(url, files[0]);
-        console.log(sendTos3);
-        const isSave = await axios.get(
-          `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/uploads/success`,
-          { params: { key,id } }
-        );
-        console.log(isSave.data);
-      }
-    } catch (err) {
-      console.log("image upload failed", err);
-    }
-  };
-  return (
-    <div>
-      <button className="w-full h-full flex p-4 justify-center items-center flex-col shadow-lg bg-slate-200 rounded-xl hover:scale-110">
-        <AddIcon
-          onClick={handleAddIconClick}
-          className="hover:cursor-pointer "
-          sx={{ fontSize: "50px" }}
-        />
-        <p>Add photo</p>
-      </button>
-      <input
-        onChange={(e) => handleUploadPhoto(e)}
-        ref={addPhotoRef}
-        type="file"
-        name=""
-        id=""
-        className="w-full h-full  hover:cursor-pointer hidden"
-      />
-    </div>
-  );
-};
-
-export const ImageGallary = ({
-  imagearray,
-}: {
-  imagearray: string[] | StaticImageData[];
-}) => {
-  const ImageComponent = ({ url }: { url: string | StaticImageData }) => {
-    return (
-      <div className="w-[240px] md:w-[150px]  " >
-        <Image
-          src={url}
-          alt="photo"
-          width={50}
-          quality={100}
-          height={50}
-          className="w-full h-full rounded-xl bg-contain"
-        ></Image>
-      </div>
-    );
-  };
-
-  function renderPhotos(arr: string[] | StaticImageData[]) {
-    return arr.map((url) => {
-      return <ImageComponent url={url}  />;
-    });
-  }
-  return (
-    <div className="flex flex-wrap w-full justify-around gap-2 border p-2 bg-slate-300 rounded-lg">
-      {renderPhotos(imagearray)}
-      <UploadPhoto />
-    </div>
-  );
-};

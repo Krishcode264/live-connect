@@ -1,6 +1,7 @@
 import React from "react";
 import ProfilePic from "../profile/profile_photo";
-import { generateSinglet, ImageGallary } from "./Ui";
+import {  ImageGallary } from "./Uploads";
+import { generateSinglet } from "./Ui";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userBasicInfoState, userPreferencesState } from "@/store/atoms/user-atom";
 import p1 from '@/images/p1.jpeg'
@@ -29,7 +30,7 @@ const Doublet=({property,value}:{property:string,value:string|number})=>{
 }
 
       const [user] = useRecoilState(userBasicInfoState);
-const imageArray=[p1,p2,p3,p4]
+
   return (
     <div className="w-[90%] md:w-[40%]mx-auto pb-2">
       <div className="flex flex-col justify-center items-center">
@@ -60,7 +61,7 @@ const imageArray=[p1,p2,p3,p4]
         </div>
       </div>
       <h4 className="font-semibold text-xl mb-3">Your photos</h4>
-      <ImageGallary imagearray={imageArray}/>
+      <ImageGallary />
       <h2 className="text-slate-800  text-2xl mb-3">Intrests</h2>
       <div className="flex flex-wrap gap-4 p-1">{generateSinglet(intrests)}</div>
       <h2 className="text-slate-800  text-2xl mb-3">Languages</h2>
