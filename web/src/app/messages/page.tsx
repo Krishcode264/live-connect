@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect } from 'react'
-import { useAuth } from '@/context/authContext';
+import { useAuth } from '@/hooks/useAuth';
 import AuthNav from '@/components/profile/auth_nav';
 import Loading from '@/components/basic/loading';
 import ProfilePic from '@/components/profile/profile_photo';

@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import { Meet } from "@/components/webRTC/meet/meet";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/hooks/useAuth";
 
 import AuthNav from "@/components/profile/auth_nav";
 import Loading from "@/components/basic/loading";

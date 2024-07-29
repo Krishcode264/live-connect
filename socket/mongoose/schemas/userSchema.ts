@@ -6,7 +6,6 @@ export const userSchema = new Schema({
     type: Date,
     default: Date.now, // Set default to current timestamp
   },
-  _id:{type:Schema.Types.ObjectId},
   id: { type: String },
   password: { type: String },
   socketID: { type: String },

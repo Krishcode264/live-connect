@@ -5,13 +5,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import WorkspacesOutlinedIcon from "@mui/icons-material/WorkspacesOutlined";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { userBasicInfoState } from "@/store/atoms/user-atom";
 import { useSetRecoilState } from "recoil";
 import googleLogo from '../images/google.png'
 import Image from "next/image";
 import { doSignIn } from "@/actions/authActions";
 import googlePic from "@/images/google.png";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
 const SignUpSchema = z.object({
   name: z.string().min(4),
   email: z.string().email(),
@@ -27,6 +29,12 @@ const Signup = () => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({ resolver: zodResolver(SignUpSchema) });
+
+const { isValid } = useAuth();
+useEffect(() => {
+  if (isValid?.status) redirect("/feed");
+  console.log(isValid.status,"from sign up");
+}, [isValid.status]);
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     if (process.env.NEXT_PUBLIC_SOCKET_SERVER_URL) {
@@ -46,12 +54,16 @@ const Signup = () => {
           name: name,
           id: id,
         }));
-        // if (Router === "/signin") {
-        //   Router.replace("/");
-        // } else {
-          Router.back();
-          
-        }
+
+  
+        const preViousRoute=sessionStorage.getItem("privousRoute")
+      if(preViousRoute){
+
+        Router.replace(preViousRoute)
+      }  else{
+        Router.replace("/feed")
+      }
+      }
       
       if (res.data.status === "error") {
         setError("root", { message: res.data.message });

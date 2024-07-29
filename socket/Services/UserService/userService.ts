@@ -16,7 +16,7 @@ export default class UserService {
       const savedUser = await newUser.save();
       return savedUser as UserSchemaType | null; // Update the type of savedUser
     } catch (err) {
-      console.log(err, "err saving connected socket user");
+      console.log(err, "error in savingf user");
       return null;
     }
   };

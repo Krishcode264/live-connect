@@ -16,18 +16,16 @@ const LoginSchema = z.object({
 import Image from "next/image";
 import { doSignIn } from "@/actions/authActions";
 import { useEffect } from "react";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/hooks/useAuth";
 
 type FormFields = z.infer<typeof LoginSchema>;
 
 const Login = () => {
 
-const { isValid ,setIsValid} = useAuth();
+const { isValid } = useAuth();
 useEffect(()=>{ 
-
 if (isValid?.status) redirect("/feed");
-console.log(isValid.status)
-},[])
+},[isValid])
 
   const Router=useRouter()
 
@@ -54,7 +52,7 @@ console.log(isValid.status)
           name: name,
           id: id,
         }));
-          setIsValid({status:true,message:""})
+         
         Router.back();
       
       }
