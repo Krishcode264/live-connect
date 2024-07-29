@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverRuntimeConfig: {
+    trustedHosts: ["localhost", "127.0.0.1"],
+  },
   images: {
     remotePatterns: [
       {
