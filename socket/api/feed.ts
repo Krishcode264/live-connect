@@ -9,16 +9,20 @@ import { PhotosData } from "../mongoose/schemas/photoSchema";
 
 export async function getFeedUsers(req: Request, res: Response): Promise<void> {
   try {
-    const users = await UserData.find().select("id age name location gender profile");
- 
-    const sendusers=await  Promise.all(users.map(async(user)=>{
-      const photos=await PhotoService.getPhotosbyId(user.id)
-     
-      return {
-        ...user.toObject(),
-        photos:photos
-      }
-    }))
+    const users = await UserData.find().select(
+      "id age name location gender profile"
+    );
+
+    const sendusers = await Promise.all(
+      users.map(async (user) => {
+        const photos = await PhotoService.getPhotosbyId(user.id);
+
+        return {
+          ...user.toObject(),
+          photos: photos,
+        };
+      })
+    );
     res.status(200).send(sendusers);
   } catch (err) {
     res.status(500).json({ message: "error fetching feed users" });
@@ -26,10 +30,10 @@ export async function getFeedUsers(req: Request, res: Response): Promise<void> {
 }
 
 export async function getUserPhotos(req: Request, res: Response) {
-const {id}=req.query;
-if (typeof(id)=="string"){
-  res.send(await PhotoService.getPhotosbyId(id));
-}
+  const { id } = req.query;
+  if (typeof id == "string") {
+    res.send(await PhotoService.getPhotosbyId(id));
+  }
 }
 
 feedRouter.get("/getFeedUsers", getFeedUsers);

@@ -24,9 +24,9 @@ export function socketioConnection() {
         socketID: socket.id,
         isConnected: true,
       }).then((data) => {
-        console.log(data)
+      
         const { name, id } = user;
-        console.log("new user connected", user);
+        console.log("new user connected", user.name);
         socket.broadcast.emit("newUserConnected", { name, id });
       });
     });
@@ -40,7 +40,7 @@ export function socketioConnection() {
         { socketID: "", isConnected: false }
       ).then((data): any => {
         if (data) {
-          console.log("user dissconnected ", data);
+          console.log("user dissconnected ", data.name);
 
           socket.broadcast.emit("userDisconnected", {
             name: data.name,
@@ -54,7 +54,6 @@ export function socketioConnection() {
     socket.on(
       "receivedOfferForRTC",
       async ({ createdOffer: offer, requestedUser, user }: Offer) => {
-        console.log("got   step 1 : got offer ", requestedUser, user);
         if (requestedUser) {
           UserService.getUserSocketIdById(requestedUser.id).then((socketID) => {
             if (socketID) {
