@@ -9,7 +9,7 @@ export const getFeedUsers = cache(async () => {
 
     return res.data;
   } catch (err) {
-    console.error("error fetching feed data", err);
+    console.error("error fetching feed data");
     return [];
   }
 });

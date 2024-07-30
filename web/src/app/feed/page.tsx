@@ -8,13 +8,14 @@ import React, {  Suspense } from "react";
 export default async function Page() {
 
   const users = await getFeedUsers();
-  console.log(users);
+  console.log(users,"useres")
   return (
     <div className="flex gap-4 flex-wrap p-4">
       <Suspense fallback={<div>Loading...</div>}>
-        {users?.map((user: FeedUserType) => {
+
+        {users.length>0 ? users.map((user: FeedUserType) => {
           return <ProfileView user={user} key={user.id} />;
-        })}
+        }):(<h3> something went wrong from our side </h3>)}
       </Suspense>
     </div>
   );
