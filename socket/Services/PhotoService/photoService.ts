@@ -32,7 +32,9 @@ export class PhotoService {
         const photos = await PhotosData.find({ uploader: user._id });
         return await Promise.all(
           photos.map(async (photo) => {
-            if (new Date() > photo.urlExpirationTime) {
+         console.log(
+           new Date() > new Date(photo.urlExpirationTime.toISOString()));
+            if (new Date() > new Date(photo.urlExpirationTime.toISOString())) {
               const url = await AwsHandler.getObjectUrl(photo.key, 1800);
               await this.updatePhotoUrl(url, photo._id);
               return {
