@@ -41,9 +41,10 @@ const Sidebarheader=()=>{
 console.log("user rendered ",user)
   return (
     <>
-    
-          <ProfilePic size={16} iconSize={50} src={user.profile} />
-    
+      <Link href={"/"}>
+        <ProfilePic size={16} iconSize={50} src={user.profile} />
+      </Link>
+
       <h3 className="text-center sm:text-xl text-blue-600 font-bold">
         {user.name}
       </h3>
@@ -59,7 +60,7 @@ const SideBar = () => {
  const icons = useMemo(
    () => [
      { name: "Messages", icon: <ChatIcon /> },
-     { name: "Feed", icon: <StreamIcon /> },
+    //  { name: "Feed", icon: <StreamIcon /> },
      { name: "Rooms", icon: <GroupsIcon /> },
      { name: "My Profile", icon: <AccountCircleIcon /> },
      { name: "Settings", icon: <SettingsIcon /> },

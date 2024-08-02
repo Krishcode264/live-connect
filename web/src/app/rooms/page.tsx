@@ -1,6 +1,5 @@
 "use client"
 import React from "react";
-import { Meet } from "@/components/webRTC/meet/meet";
 import { useAuth } from "@/hooks/useAuth";
 
 import AuthNav from "@/components/profile/auth_nav";
@@ -14,10 +13,10 @@ const Page = () => {
     )
   }
   return(
-    <>
-
-{isValid?.status ? <Meet/> : <AuthNav text={isValid?.message}/>}
-    </>
+    <h1>
+paGHE
+{/* {isValid?.status ? <Meet/> : <AuthNav text={isValid?.message}/>} */}
+    </h1>
   )
 };
 export default Page;

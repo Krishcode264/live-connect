@@ -13,3 +13,14 @@ export const getFeedUsers = cache(async () => {
     return [];
   }
 });
+
+export const getUser=cache(async(id:string)=>{
+  try{
+const res = await axios.get(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/feed/getUser`,{params:{id}});
+return res.data
+  }catch(err){
+
+    console.log("somethingwent wrong with fethching the user ")
+    return null;
+  }
+})

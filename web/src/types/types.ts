@@ -3,7 +3,7 @@ import type { Schema } from "zod";
 export type User = {
   name: string;
   id: string;
-   profile?:"string"
+  profile?:"string"
 };
 
 export type Offer = {

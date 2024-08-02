@@ -6,13 +6,13 @@ import { peerConnectionState } from "@/store/selectors/pc-selector";
 import { remoteStreamState } from "@/store/selectors/media-state-selector";
 import { mediaStreamState } from "@/store/atoms/media-stream-atom";
 import MediaPermission from "./MediaStream/media-permission";
+import { usePC } from "@/context/peerConnectionContext";
 
 const WebrtcConnection = () => {
-  const peerConnection = useRecoilValue(peerConnectionState);
+ 
   const [remoteStream, setRemoteStream] = useRecoilState(remoteStreamState);
-  const [{ mediaStream, tracksAdded }, setMediaStreamAll] =
-    useRecoilState(mediaStreamState);
-
+  const [{ mediaStream, tracksAdded }, setMediaStreamAll] = useRecoilState(mediaStreamState);
+const peerConnection=usePC()
   useEffect(() => {
     if (peerConnection) {
       peerConnection.ontrack = (e: RTCTrackEvent) => {

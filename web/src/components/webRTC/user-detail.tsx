@@ -3,12 +3,15 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import CallIcon from "@mui/icons-material/Call";
 import { connectedUsersState } from "../../store/atoms/socket-atom";
 import { guestState } from "../../store/atoms/guest-atom";
-import { peerConnectionState } from "../../store/selectors/pc-selector";
 import { userInfoState } from "@/store/selectors/user-selector";
 import { useContext } from "react";
-import SocketContext from "@/context/context";
+
 import { callState } from "@/store/atoms/calling-state";
 import { Icon } from "@mui/material";
+import { useSocket } from '@/context/socketContext';
+import { Socket } from "socket.io-client";
+import { usePC } from "@/context/peerConnectionContext";
+import { PC } from "@/utils/PC";
 
 const CallStateIcon = () => {
   const callingState = useRecoilValue(callState);
@@ -24,33 +27,22 @@ const CallStateIcon = () => {
 const UserDetail = ({ id, name }: User) => {
   const [{ persontoHandshake }, setPersontoHandshake] =
     useRecoilState(guestState);
-  const socket = useContext(SocketContext);
-  const peerConnection = useRecoilValue(peerConnectionState);
+  const socket = useSocket();
+  const peerConnection = usePC();
   const user = useRecoilValue(userInfoState);
   const [callingState, setCallingState] = useRecoilState(callState);
-  const createOffer = async () => {
-    try {
-      const createdOffer = await peerConnection?.createOffer();
-      await peerConnection?.setLocalDescription(createdOffer);
-      return createdOffer;
-    } catch (error) {
-      // Handle the error if needed
-      console.error("Error creating offer:", error);
-      throw error; // Optional: rethrow the error to propagate it
-    }
-  };
+const pc:PC|null = peerConnection ? new PC(peerConnection) : null;
 
   const emitUserRequestForVideoCall = async (
     requestedUser: User
   ): Promise<void> => {
-    console.log(socket, "soxket from emit user req ");
     setCallingState("calling");
-    const createdOffer = await createOffer();
+    const createdOffer = await pc?.createOffer();
     setPersontoHandshake(() => ({ persontoHandshake: requestedUser }));
-    // console.log("guest from emituserrequest", persontoHandshake);
+
     if (socket !== null && createdOffer) {
       console.log("socket is preset: here is offer ", createdOffer);
-      socket.emit("receivedOfferForRTC", { createdOffer, requestedUser, user });
+      socket?.emit("receivedOfferForRTC", { createdOffer, requestedUser, user });
     }
   };
 

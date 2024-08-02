@@ -32,7 +32,7 @@ const Signup = () => {
 
 const { isValid } = useAuth();
 useEffect(() => {
-  if (isValid?.status) redirect("/feed");
+  if (isValid?.status) redirect("/");
   console.log(isValid.status,"from sign up");
 }, [isValid.status]);
 

@@ -33,11 +33,12 @@ const DetailedChatView=()=>{
 }
 
 const Page = () => {
-const {isLoading,isValid}=useAuth()
-if (isLoading) <Loading/>
+// const {isLoading,isValid}=useAuth()
+// if (isLoading) <Loading/>
     return (
       <div className='h-full'>
-        {!isValid.status && !isLoading ? (
+        <h1>messages </h1>
+        {/* {!isValid.status && !isLoading ? (
           <AuthNav text="you need to authenticate to see your friend's messages" />
         ) : (
           <div className='flex h-full border '>
@@ -45,7 +46,7 @@ if (isLoading) <Loading/>
             <ChatHeadContainer />
             <DetailedChatView />
           </div>
-        )}
+        )} */}
       </div>
     );
 }

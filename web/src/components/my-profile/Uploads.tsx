@@ -81,7 +81,7 @@ export const UploadPhoto = () => {
   );
 };
 
-export const ImageGallary = () => {
+export  const  ImageGallary = () => {
   const [photos, setphotos] = useRecoilState(UserPhotosState);
   const { id } = useRecoilValue(userBasicInfoState);
 

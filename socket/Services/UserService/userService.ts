@@ -4,6 +4,7 @@ import { userSchema } from "../../mongoose/schemas/userSchema";
 import { v4 as uuidv4 } from "uuid";
 import { UserData } from "../../mongoose/schemas/userSchema";
 import { PhotosData } from "../../mongoose/schemas/photoSchema";
+import { AwsHandler } from "../../aws";
 
 export default class UserService {
   static saveUserData = async (
@@ -20,7 +21,7 @@ export default class UserService {
       return null;
     }
   };
- static checkUserAlreadyExist = async (email: string) => {
+  static checkUserAlreadyExist = async (email: string) => {
     const users = await UserData.find({ email });
     return users;
   };
@@ -53,7 +54,7 @@ export default class UserService {
   };
 
   static updateUserData = async (
-    query:any,
+    query: any,
     data: Partial<UserSchemaType>
   ): Promise<UserSchemaType | null> => {
     try {
@@ -62,10 +63,35 @@ export default class UserService {
         { $set: data },
         { new: true, runValidators: true }
       );
-      console.log(updateUser)
+      console.log(updateUser);
       return updateUser as UserSchemaType | null;
     } catch (err) {
-      console.log(err,"update user failed")
+      console.log(err, "update user failed");
+      return null;
+    }
+  };
+
+  static getUserProfile = async (id: string) => {
+    try {
+      const user = await UserData.findOne({ id }).select(
+        "name age  profile gender intrests id"
+      );
+      const photos = await PhotosData.find({ uploader: user?._id }).select(
+        "key imageUrl uploadedAt likes _id"
+      );
+
+      const updatedurlPhotos = await Promise.all(
+        photos.map(async (photo) => {
+          if (new Date() > photo.urlExpirationTime) {
+            const url = await AwsHandler.getObjectUrl(photo.key, 1800);
+            await PhotosData.findByIdAndUpdate(photo._id, { imageUrl: url });
+            return { likes:photo.likes,uploadedAt:photo.uploadedAt, url ,id:photo._id};
+          }
+          return { likes:photo.likes, uploadedAt:photo.uploadedAt ,url:photo.imageUrl,id:photo._id};
+        })
+      );
+      return { ...user, photos: updatedurlPhotos };
+    } catch {
       return null;
     }
   };
